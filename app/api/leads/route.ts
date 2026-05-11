@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { v4 as uuidv4 } from 'uuid'
 import type { LeadSubmissionPayload, LeadSubmissionResponse, Lead } from '@/types'
 import { submitToHubSpot, submitToGoogleSheets, submitToCRMWebhook } from '@/lib/services/leadService'
+import { sendLeadEmail } from '@/lib/services/emailService'
 
 // In-memory dev store — replace with DB (Postgres/Supabase/PlanetScale) in production
 const leads: Lead[] = []
@@ -31,6 +32,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<LeadSubmissio
 
     // Fire integrations non-blocking
     void Promise.allSettled([
+      sendLeadEmail(leadId, payload),
       submitToHubSpot(payload),
       submitToGoogleSheets(payload),
       submitToCRMWebhook(payload),

@@ -5,10 +5,10 @@ import Link from 'next/link'
 import { Leaf, Menu, X, Calculator } from 'lucide-react'
 
 const navLinks = [
-  { label: 'Solutions', href: '#solutions' },
-  { label: 'How It Works', href: '#how-it-works' },
-  { label: 'About', href: '#about' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Solutions', href: '/#solutions' },
+  { label: 'How It Works', href: '/#how-it-works' },
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
 ]
 
 export function Header() {

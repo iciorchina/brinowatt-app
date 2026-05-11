@@ -1,32 +1,34 @@
+// Sample / illustrative project profiles based on typical European deployments.
+// Replace with real customer testimonials (with their permission) once available.
 const testimonials = [
   {
-    quote: "The ROI calculator gave us the confidence to approve the €180k investment. The payback estimate was accurate within 5% of what we actually achieved.",
-    name: 'Sophie Laurent',
-    role: 'CFO',
-    company: 'Leclerc Manufacturing',
+    quote: "The 50 kWp PV + 75 kWh battery sizing matched our actual usage profile almost exactly. Three-scenario view made the boardroom decision easy.",
+    name: 'Mid-size manufacturer',
+    role: 'Finance lead',
+    company: '~12,000 m² plant',
     country: 'France',
-    initials: 'SL',
-    savings: '€42k/year saved',
+    initials: 'FR',
+    savings: '~€42k/year potential',
     color: 'blue',
   },
   {
-    quote: "Saved us 38% on our electricity bill in year one. We went from sceptical to fully convinced after seeing the numbers in black and white.",
-    name: 'Marcus Weber',
-    role: 'Operations Director',
-    company: 'Weber Logistics GmbH',
+    quote: "Combined PV + heat pump cut a 38% slice off our annual energy spend in modelling. The country-specific gas-vs-electric numbers were the key insight.",
+    name: 'Cold-chain logistics SME',
+    role: 'Operations',
+    company: '~8,000 m² warehouse',
     country: 'Germany',
-    initials: 'MW',
-    savings: '€31k/year saved',
+    initials: 'DE',
+    savings: '~€31k/year potential',
     color: 'brand',
   },
   {
-    quote: "We went from zero knowledge to a signed contract in 3 weeks. The process was surprisingly simple and the specialist follow-up was excellent.",
-    name: 'Jan Kowalski',
-    role: 'Facility Manager',
-    company: 'Polska Retail S.A.',
+    quote: "From first calculation to a vetted specialist quote in three weeks. The synergy logic for PV + battery prevented us from over-buying capacity.",
+    name: 'Multi-site retail group',
+    role: 'Facilities',
+    company: '14 retail locations',
     country: 'Poland',
-    initials: 'JK',
-    savings: '€19k/year saved',
+    initials: 'PL',
+    savings: '~€19k/year potential',
     color: 'purple',
   },
 ]
@@ -42,14 +44,15 @@ export function TestimonialsSection() {
     <section className="py-24 bg-neutral-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <span className="inline-block px-4 py-1.5 bg-brand-50 text-brand-700 text-sm font-semibold rounded-full mb-4">
-            Customer Stories
+          <span className="inline-block px-4 py-1.5 bg-amber-50 text-amber-800 text-sm font-semibold rounded-full mb-4">
+            Sample project profiles · Illustrative
           </span>
           <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">
-            Real Businesses. Real Results.
+            What typical European deployments look like
           </h2>
           <p className="text-lg text-neutral-500 max-w-xl mx-auto">
-            Hundreds of European businesses have used Brinowatt to evaluate and execute profitable energy investments.
+            Three example scenarios drawn from common SME profiles across the EU. Your
+            numbers depend on your site, sector, and country.
           </p>
         </div>
 
@@ -87,8 +90,10 @@ export function TestimonialsSection() {
           })}
         </div>
 
-        <p className="text-center text-neutral-400 text-xs mt-8">
-          * Results shown are based on customer-reported outcomes. Individual results may vary based on location, system size, energy usage, and local conditions.
+        <p className="text-center text-neutral-400 text-xs mt-8 max-w-2xl mx-auto">
+          * Illustrative scenarios based on typical European SME deployments — not actual
+          customer endorsements. Real results depend on location, system specifications,
+          consumption profile, and local market conditions.
         </p>
       </div>
     </section>

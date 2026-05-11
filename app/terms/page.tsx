@@ -63,7 +63,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-xl font-bold text-neutral-900 mb-3">8. Governing Law</h2>
-            <p>These Terms shall be governed by and construed in accordance with the laws of [Your Jurisdiction]. Any disputes shall be subject to the exclusive jurisdiction of the courts of [Your Jurisdiction].</p>
+            <p>These Terms shall be governed by and construed in accordance with the laws of Romania (EU). Any disputes shall be subject to the exclusive jurisdiction of the courts of Romania (EU).</p>
           </section>
 
           <section>

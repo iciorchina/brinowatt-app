@@ -28,13 +28,13 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-xl font-bold text-neutral-900 mb-3">1. Data Controller</h2>
             <p>
-              Brinowatt ("<strong>we</strong>", "<strong>us</strong>", or "<strong>our</strong>") is the data controller responsible for your personal data collected through this website and the energy ROI calculator at <strong>[your-domain.com]</strong>.
+              Brinowatt ("<strong>we</strong>", "<strong>us</strong>", or "<strong>our</strong>") is the data controller responsible for your personal data collected through this website and the energy ROI calculator.
             </p>
             <p className="mt-3">
               Contact us regarding data privacy matters at:<br />
               <strong>Email:</strong> privacy@brinowatt.com<br />
-              <strong>Address:</strong> [Company Address], [City], [Country]<br />
-              <strong>Data Protection Officer:</strong> [DPO Name or "Not required" if applicable]
+              <strong>Address:</strong> Bucharest, Romania<br />
+              <strong>Data Protection Officer:</strong> Not formally appointed (per Art. 37(1) GDPR — voluntary basis). Privacy enquiries are handled by our designated point of contact via the email above.
             </p>
           </section>
 
@@ -131,8 +131,8 @@ export default function PrivacyPage() {
             <p>We use the following types of cookies:</p>
             <ul className="list-disc pl-5 mt-3 space-y-1.5">
               <li><strong>Strictly necessary:</strong> Session cookies required for the calculator to function (no consent required)</li>
-              <li><strong>Analytics:</strong> [e.g. Google Analytics] to understand usage patterns — requires your consent</li>
-              <li><strong>Marketing:</strong> [e.g. Google Ads, LinkedIn Insight Tag] to measure campaign performance — requires your consent</li>
+              <li><strong>Analytics:</strong> Vercel Analytics for anonymised page-view metrics — no personal data collected</li>
+              <li><strong>Marketing:</strong> Currently none. We will request your consent before introducing marketing trackers.</li>
             </ul>
             <p className="mt-3">You can manage your cookie preferences via the cookie banner on our website, or through your browser settings.</p>
           </section>
@@ -151,7 +151,7 @@ export default function PrivacyPage() {
             <p>
               For any privacy-related questions, requests, or complaints, please contact us at:<br />
               <strong>Email:</strong> privacy@brinowatt.com<br />
-              <strong>Post:</strong> [Company Name], [Address], [City], [Country]
+              <strong>Post:</strong> Brinowatt, Bucharest, Romania
             </p>
             <p className="mt-3">
               If you are not satisfied with our response, you have the right to complain to your local data protection authority. A list of EU supervisory authorities is available at:{' '}
