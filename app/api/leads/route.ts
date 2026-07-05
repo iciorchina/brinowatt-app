@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { v4 as uuidv4 } from 'uuid'
 import type { LeadSubmissionPayload, LeadSubmissionResponse, Lead } from '@/types'
-import { submitToHubSpot, submitToGoogleSheets, submitToCRMWebhook } from '@/lib/services/leadService'
+import { submitToHubSpot, submitToGoogleSheets, submitToCRMWebhook, submitToBrinokoEngine } from '@/lib/services/leadService'
 import { sendLeadEmail } from '@/lib/services/emailService'
 
 // In-memory dev store — replace with DB (Postgres/Supabase/PlanetScale) in production
@@ -29,6 +29,14 @@ export async function POST(req: NextRequest): Promise<NextResponse<LeadSubmissio
     }
 
     leads.push(lead)
+
+    // Brinoko Engine is the primary CRM — awaited so failures surface in logs
+    // (the user still gets success; the email fallback below also fires).
+    try {
+      await submitToBrinokoEngine(payload)
+    } catch (err) {
+      console.error('[Brinoko Engine] lead forward failed:', err)
+    }
 
     // Fire integrations non-blocking
     void Promise.allSettled([

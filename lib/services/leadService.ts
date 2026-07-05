@@ -40,3 +40,56 @@ export async function submitToCRMWebhook(payload: LeadSubmissionPayload): Promis
     body: JSON.stringify(payload),
   })
 }
+
+// ── Brinoko Engine (primary CRM) ────────────────────────────────────────────
+// Forwards calculator leads into the Brinoko Engine pipeline (scoring →
+// nurture → partner routing). Configure BRINOKO_ENGINE_URL, e.g.
+// http://localhost:3100 in dev, https://app.brinoko.ro in production.
+
+const SOLUTION_TO_OFFERING: Record<string, string> = {
+  pv: 'pv_b2b',
+  bess: 'bess',
+  heatpump: 'heat_pumps',
+}
+
+export async function submitToBrinokoEngine(payload: LeadSubmissionPayload): Promise<void> {
+  const base = process.env.BRINOKO_ENGINE_URL
+  if (!base) return
+
+  const f = payload.formData
+  const c = payload.results?.combined
+  const summary = [
+    `Calculator Brinowatt (${f.country})`,
+    c?.totalAnnualSavings != null ? `economii anuale estimate ~€${Math.round(c.totalAnnualSavings)}` : null,
+    c?.totalPaybackYears != null ? `payback estimat ~${c.totalPaybackYears.toFixed(1)} ani` : null,
+    c?.totalCapexEUR != null ? `CAPEX estimat ~€${Math.round(c.totalCapexEUR)}` : null,
+  ]
+    .filter(Boolean)
+    .join(' · ')
+
+  const utm: Record<string, string> = {}
+  if (payload.metadata?.utmSource) utm.utm_source = payload.metadata.utmSource
+  if (payload.metadata?.utmMedium) utm.utm_medium = payload.metadata.utmMedium
+  if (payload.metadata?.utmCampaign) utm.utm_campaign = payload.metadata.utmCampaign
+
+  const res = await fetch(`${base}/api/lead`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      offerSlug: 'brinowatt-roi',
+      sourceKind: 'calculator',
+      offering: SOLUTION_TO_OFFERING[f.selectedSolution] ?? 'energy_efficiency',
+      company: f.companyName,
+      contactName: f.contactName,
+      email: f.email,
+      phone: f.phone ?? '',
+      message: summary.slice(0, 2000),
+      // GDPR: the engine hard-rejects submissions without explicit consent.
+      consent: f.gdprConsent === true,
+      utm,
+    }),
+  })
+  if (!res.ok) {
+    throw new Error(`Brinoko Engine ${res.status}: ${await res.text()}`)
+  }
+}
