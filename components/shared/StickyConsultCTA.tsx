@@ -24,7 +24,7 @@ export function StickyConsultCTA() {
       aria-hidden={!visible}
     >
       <Link
-        href="/calculator"
+        href="/contact"
         tabIndex={visible ? 0 : -1}
         className="group flex items-center gap-2.5 px-5 py-3.5 bg-green-600 hover:bg-green-500 text-white font-semibold text-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95 ring-2 ring-white/20"
         aria-label="Get a free quote"

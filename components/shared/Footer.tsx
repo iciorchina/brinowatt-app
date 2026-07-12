@@ -4,14 +4,15 @@ import Link from 'next/link'
 import { Leaf, Mail, Linkedin, ArrowRight } from 'lucide-react'
 
 const solutionsLinks = [
-  { label: 'Solar PV', href: '#solutions' },
-  { label: 'Battery Storage (BESS)', href: '#solutions' },
-  { label: 'Heat Pumps', href: '#solutions' },
-  { label: 'Combined Systems', href: '#solutions' },
+  { label: 'Solar PV', href: '/#solutions' },
+  { label: 'Battery Storage (BESS)', href: '/#solutions' },
+  { label: 'Heat Pumps', href: '/#solutions' },
+  { label: 'Combined Systems', href: '/#solutions' },
 ]
 
 const companyLinks = [
-  { label: 'About Us', href: '/#about' },
+  { label: 'About Us', href: '/about' },
+  { label: 'Contact', href: '/contact' },
   { label: 'How It Works', href: '/#how-it-works' },
   { label: 'FAQ', href: '/#faq' },
   { label: 'Calculator', href: '/calculator' },
