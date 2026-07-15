@@ -3,17 +3,20 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Leaf, Menu, X, Calculator } from 'lucide-react'
-
-const navLinks = [
-  { label: 'Solutions', href: '/#solutions' },
-  { label: 'How It Works', href: '/#how-it-works' },
-  { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/contact' },
-]
+import { useLang } from '@/lib/i18n/LanguageContext'
+import { LanguageSwitcher } from '@/components/shared/LanguageSwitcher'
 
 export function Header() {
+  const { t } = useLang()
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+
+  const navLinks = [
+    { label: t.nav.solutions, href: '/#solutions' },
+    { label: t.nav.howItWorks, href: '/#how-it-works' },
+    { label: t.nav.about, href: '/about' },
+    { label: t.nav.contact, href: '/contact' },
+  ]
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 12)
@@ -74,13 +77,14 @@ export function Header() {
           </nav>
 
           {/* Desktop CTA */}
-          <div className="hidden md:flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-2">
+            <LanguageSwitcher />
             <Link
               href="/calculator"
               className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-xl transition-all duration-200 shadow-sm hover:shadow-md active:scale-95"
             >
               <Calculator className="w-4 h-4" />
-              Start Calculator
+              {t.nav.startCalculator}
             </Link>
           </div>
 
@@ -115,13 +119,14 @@ export function Header() {
             </a>
           ))}
           <div className="pt-2 border-t border-neutral-100 mt-1">
+            <LanguageSwitcher variant="mobile" />
             <Link
               href="/calculator"
               onClick={() => setMobileOpen(false)}
-              className="flex items-center justify-center gap-2 w-full px-5 py-3 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-xl transition-all duration-200 active:scale-95"
+              className="flex items-center justify-center gap-2 w-full px-5 py-3 mt-1 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-xl transition-all duration-200 active:scale-95"
             >
               <Calculator className="w-4 h-4" />
-              Start Calculator
+              {t.nav.startCalculator}
             </Link>
           </div>
         </nav>

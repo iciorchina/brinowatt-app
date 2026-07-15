@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { Analytics } from '@vercel/analytics/react'
+import { LanguageProvider } from '@/lib/i18n/LanguageContext'
 import { Header } from '@/components/shared/Header'
 import { Footer } from '@/components/shared/Footer'
 import { StickyConsultCTA } from '@/components/shared/StickyConsultCTA'
@@ -78,11 +79,13 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen flex flex-col bg-white" suppressHydrationWarning>
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <StickyConsultCTA />
-        <CookieBanner />
+        <LanguageProvider>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <StickyConsultCTA />
+          <CookieBanner />
+        </LanguageProvider>
         <Analytics />
       </body>
     </html>

@@ -3,8 +3,10 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { PhoneCall } from 'lucide-react'
+import { useLang } from '@/lib/i18n/LanguageContext'
 
 export function StickyConsultCTA() {
+  const { t } = useLang()
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -32,7 +34,7 @@ export function StickyConsultCTA() {
         <span className="flex items-center justify-center w-8 h-8 rounded-xl bg-white/20 group-hover:bg-white/30 transition-colors">
           <PhoneCall className="w-4 h-4" />
         </span>
-        <span>Get Free Quote</span>
+        <span>{t.stickyCta}</span>
       </Link>
     </div>
   )

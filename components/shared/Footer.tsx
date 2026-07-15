@@ -2,30 +2,26 @@
 
 import Link from 'next/link'
 import { Leaf, Mail, Linkedin, ArrowRight } from 'lucide-react'
-
-const solutionsLinks = [
-  { label: 'Solar PV', href: '/#solutions' },
-  { label: 'Battery Storage (BESS)', href: '/#solutions' },
-  { label: 'Heat Pumps', href: '/#solutions' },
-  { label: 'Combined Systems', href: '/#solutions' },
-]
-
-const companyLinks = [
-  { label: 'About Us', href: '/about' },
-  { label: 'Contact', href: '/contact' },
-  { label: 'How It Works', href: '/#how-it-works' },
-  { label: 'FAQ', href: '/#faq' },
-  { label: 'Calculator', href: '/calculator' },
-]
-
-const legalLinks = [
-  { label: 'Privacy Policy', href: '/privacy' },
-  { label: 'Terms of Service', href: '/terms' },
-  { label: 'Cookie Policy', href: '/cookies' },
-  { label: 'GDPR Information', href: '/privacy' },
-]
+import { useLang } from '@/lib/i18n/LanguageContext'
 
 export function Footer() {
+  const { t } = useLang()
+
+  const companyLinks = [
+    { label: t.footer.aboutUs, href: '/about' },
+    { label: t.footer.contact, href: '/contact' },
+    { label: t.footer.howItWorks, href: '/#how-it-works' },
+    { label: t.footer.faq, href: '/#faq' },
+    { label: t.footer.calculator, href: '/calculator' },
+  ]
+
+  const legalLinks = [
+    { label: t.footer.privacyPolicy, href: '/privacy' },
+    { label: t.footer.terms, href: '/terms' },
+    { label: t.footer.cookiePolicy, href: '/cookies' },
+    { label: t.footer.gdprInfo, href: '/privacy' },
+  ]
+
   return (
     <footer className="bg-neutral-900 text-white">
       {/* Main footer grid */}
@@ -42,8 +38,7 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-neutral-400 text-sm leading-relaxed max-w-xs mb-6">
-              Empowering European businesses with energy intelligence. Brinowatt helps you calculate
-              your ROI, understand your options, and make confident energy investments.
+              {t.footer.description}
             </p>
 
             {/* Social / contact icons */}
@@ -70,16 +65,16 @@ export function Footer() {
           {/* Solutions */}
           <div>
             <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
-              Solutions
+              {t.footer.solutionsTitle}
             </h3>
             <ul className="space-y-2.5">
-              {solutionsLinks.map((link) => (
-                <li key={link.label}>
+              {t.footer.solutionsLinks.map((label) => (
+                <li key={label}>
                   <a
-                    href={link.href}
+                    href="/#solutions"
                     className="text-sm text-neutral-400 hover:text-white transition-colors"
                   >
-                    {link.label}
+                    {label}
                   </a>
                 </li>
               ))}
@@ -89,7 +84,7 @@ export function Footer() {
           {/* Company */}
           <div>
             <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
-              Company
+              {t.footer.companyTitle}
             </h3>
             <ul className="space-y-2.5">
               {companyLinks.map((link) => (
@@ -108,7 +103,7 @@ export function Footer() {
           {/* Legal */}
           <div>
             <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
-              Legal
+              {t.footer.legalTitle}
             </h3>
             <ul className="space-y-2.5">
               {legalLinks.map((link) => (
@@ -130,10 +125,10 @@ export function Footer() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
               <h3 className="text-base font-semibold text-white mb-1">
-                Stay ahead of energy market trends
+                {t.footer.newsletterTitle}
               </h3>
               <p className="text-sm text-neutral-400">
-                Monthly insights on energy prices, policy changes, and ROI opportunities in Europe.
+                {t.footer.newsletterSubtitle}
               </p>
             </div>
             <form
@@ -143,7 +138,7 @@ export function Footer() {
             >
               <input
                 type="email"
-                placeholder="your@company.com"
+                placeholder={t.footer.newsletterPlaceholder}
                 className="flex-1 md:w-64 px-4 py-2.5 rounded-xl bg-neutral-800 border border-neutral-700 text-sm text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all"
                 aria-label="Email address for newsletter"
               />
@@ -151,7 +146,7 @@ export function Footer() {
                 type="submit"
                 className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-green-600 hover:bg-green-500 text-white text-sm font-semibold rounded-xl transition-colors whitespace-nowrap active:scale-95"
               >
-                Subscribe
+                {t.footer.subscribe}
                 <ArrowRight className="w-4 h-4" />
               </button>
             </form>
@@ -162,16 +157,16 @@ export function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-neutral-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-neutral-500">
-          <span>© 2024 Brinowatt. All rights reserved.</span>
+          <span>{t.footer.rights}</span>
           <div className="flex items-center gap-4">
             <Link href="/privacy" className="hover:text-neutral-300 transition-colors">
-              Privacy Policy
+              {t.footer.privacyPolicy}
             </Link>
             <Link href="/terms" className="hover:text-neutral-300 transition-colors">
-              Terms
+              {t.footer.termsShort}
             </Link>
             <Link href="/cookies" className="hover:text-neutral-300 transition-colors">
-              Cookies
+              {t.footer.cookiesShort}
             </Link>
           </div>
         </div>

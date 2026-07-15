@@ -1,36 +1,34 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Send, CheckCircle2, AlertTriangle, Loader2 } from 'lucide-react'
+import { useLang } from '@/lib/i18n/LanguageContext'
+import type { Dictionary } from '@/lib/i18n/dictionaries'
 
-const schema = z.object({
-  name: z.string().min(2, 'Please enter your full name'),
-  company: z.string().optional(),
-  email: z.string().email('Please enter a valid email address'),
-  phone: z.string().optional(),
-  reason: z.string().min(1, 'Please choose a reason'),
-  message: z.string().min(10, 'Please give us at least a sentence (10+ characters)'),
-  consent: z.boolean().refine((v) => v === true, {
-    message: 'Please confirm consent to proceed',
-  }),
-})
+function makeSchema(c: Dictionary['contact']) {
+  return z.object({
+    name: z.string().min(2, c.vName),
+    company: z.string().optional(),
+    email: z.string().email(c.vEmail),
+    phone: z.string().optional(),
+    reason: z.string().min(1, c.vReason),
+    message: z.string().min(10, c.vMessage),
+    consent: z.boolean().refine((v) => v === true, { message: c.vConsent }),
+  })
+}
 
-type FormValues = z.infer<typeof schema>
-
-const reasons = [
-  { value: 'proposal', label: 'I want a tailored proposal' },
-  { value: 'question', label: 'Question about the calculator' },
-  { value: 'partnership', label: 'Partnership or referral' },
-  { value: 'press', label: 'Press / media' },
-  { value: 'other', label: 'Something else' },
-]
+type FormValues = z.infer<ReturnType<typeof makeSchema>>
 
 export function ContactForm() {
+  const { t, lang } = useLang()
+  const c = t.contact
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
+
+  const schema = useMemo(() => makeSchema(c), [c])
 
   const {
     register,
@@ -40,13 +38,7 @@ export function ContactForm() {
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: '',
-      company: '',
-      email: '',
-      phone: '',
-      reason: '',
-      message: '',
-      consent: false,
+      name: '', company: '', email: '', phone: '', reason: '', message: '', consent: false,
     },
   })
 
@@ -59,6 +51,7 @@ export function ContactForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...values,
+          language: lang,
           submittedAt: new Date().toISOString(),
           pageUrl: typeof window !== 'undefined' ? window.location.href : '',
         }),
@@ -81,14 +74,10 @@ export function ContactForm() {
         <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-green-100 text-green-700 mb-4">
           <CheckCircle2 className="w-7 h-7" />
         </div>
-        <h3 className="text-xl font-bold text-neutral-900 mb-2">Message received — thank you.</h3>
+        <h3 className="text-xl font-bold text-neutral-900 mb-2">{c.successTitle}</h3>
         <p className="text-neutral-600 max-w-md mx-auto mb-6">
-          We've got your enquiry and will be in touch within one business day. For
-          time-sensitive matters, email us directly at{' '}
-          <a
-            href="mailto:hello@brinowatt.com"
-            className="text-brand-700 underline underline-offset-2"
-          >
+          {c.successBody}{' '}
+          <a href="mailto:hello@brinowatt.com" className="text-brand-700 underline underline-offset-2">
             hello@brinowatt.com
           </a>
           .
@@ -98,7 +87,7 @@ export function ContactForm() {
           onClick={() => setStatus('idle')}
           className="text-sm text-brand-700 hover:text-brand-800 font-semibold"
         >
-          Send another message
+          {c.sendAnother}
         </button>
       </div>
     )
@@ -109,7 +98,7 @@ export function ContactForm() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-neutral-700 mb-1.5">
-            Full name <span className="text-red-500">*</span>
+            {c.fullName} <span className="text-red-500">*</span>
           </label>
           <input
             {...register('name')}
@@ -119,7 +108,7 @@ export function ContactForm() {
           {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
         </div>
         <div>
-          <label className="block text-sm font-medium text-neutral-700 mb-1.5">Company</label>
+          <label className="block text-sm font-medium text-neutral-700 mb-1.5">{c.company}</label>
           <input
             {...register('company')}
             placeholder="Acme GmbH"
@@ -131,7 +120,7 @@ export function ContactForm() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-neutral-700 mb-1.5">
-            Email <span className="text-red-500">*</span>
+            {c.email} <span className="text-red-500">*</span>
           </label>
           <input
             {...register('email')}
@@ -142,11 +131,11 @@ export function ContactForm() {
           {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
         </div>
         <div>
-          <label className="block text-sm font-medium text-neutral-700 mb-1.5">Phone</label>
+          <label className="block text-sm font-medium text-neutral-700 mb-1.5">{c.phone}</label>
           <input
             {...register('phone')}
             type="tel"
-            placeholder="+49 ..."
+            placeholder="+40 ..."
             className="w-full px-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-neutral-900 placeholder-neutral-400 transition-colors"
           />
         </div>
@@ -154,14 +143,14 @@ export function ContactForm() {
 
       <div>
         <label className="block text-sm font-medium text-neutral-700 mb-1.5">
-          What can we help with? <span className="text-red-500">*</span>
+          {c.reasonLabel} <span className="text-red-500">*</span>
         </label>
         <select
           {...register('reason')}
           className="w-full px-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-neutral-900 bg-white transition-colors"
         >
-          <option value="">Choose a reason…</option>
-          {reasons.map((r) => (
+          <option value="">{c.reasonPlaceholder}</option>
+          {c.reasons.map((r) => (
             <option key={r.value} value={r.value}>
               {r.label}
             </option>
@@ -172,17 +161,15 @@ export function ContactForm() {
 
       <div>
         <label className="block text-sm font-medium text-neutral-700 mb-1.5">
-          Message <span className="text-red-500">*</span>
+          {c.message} <span className="text-red-500">*</span>
         </label>
         <textarea
           {...register('message')}
           rows={5}
-          placeholder="A few details about your project, site, or question…"
+          placeholder={c.messagePlaceholder}
           className="w-full px-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-neutral-900 placeholder-neutral-400 transition-colors resize-y"
         />
-        {errors.message && (
-          <p className="text-red-500 text-xs mt-1">{errors.message.message}</p>
-        )}
+        {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message.message}</p>}
       </div>
 
       <div>
@@ -193,28 +180,21 @@ export function ContactForm() {
             className="mt-0.5 w-4 h-4 accent-brand-600 rounded flex-shrink-0"
           />
           <span className="text-sm text-neutral-600 leading-relaxed">
-            I consent to Brinowatt processing the data above to respond to my enquiry.
-            See our{' '}
-            <a
-              href="/privacy"
-              target="_blank"
-              className="text-brand-700 underline underline-offset-2"
-            >
-              Privacy Policy
+            {c.consent}{' '}
+            <a href="/privacy" target="_blank" className="text-brand-700 underline underline-offset-2">
+              {c.privacyPolicy}
             </a>
             . <span className="text-red-500">*</span>
           </span>
         </label>
-        {errors.consent && (
-          <p className="text-red-500 text-xs mt-1 ml-7">{errors.consent.message}</p>
-        )}
+        {errors.consent && <p className="text-red-500 text-xs mt-1 ml-7">{errors.consent.message}</p>}
       </div>
 
       {status === 'error' && errorMsg && (
         <div className="flex items-start gap-3 p-3 rounded-xl bg-red-50 border border-red-100 text-red-800 text-sm">
           <AlertTriangle className="w-4 h-4 mt-0.5 flex-shrink-0" />
           <div>
-            <strong>We couldn't send your message.</strong>
+            <strong>{c.errorTitle}</strong>
             <div className="text-xs mt-0.5">{errorMsg}</div>
           </div>
         </div>
@@ -229,12 +209,12 @@ export function ContactForm() {
           {status === 'sending' ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin" />
-              Sending…
+              {c.sending}
             </>
           ) : (
             <>
               <Send className="w-4 h-4" />
-              Send message
+              {c.send}
             </>
           )}
         </button>

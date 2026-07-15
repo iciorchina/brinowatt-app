@@ -3,10 +3,12 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Cookie, X } from 'lucide-react'
+import { useLang } from '@/lib/i18n/LanguageContext'
 
 const COOKIE_KEY = 'brinowatt_cookie_consent'
 
 export function CookieBanner() {
+  const { t } = useLang()
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -44,12 +46,12 @@ export function CookieBanner() {
             <Cookie className="w-3.5 h-3.5" />
           </span>
           <p className="text-xs text-neutral-300 leading-relaxed flex-1">
-            We use cookies to improve your experience.{' '}
+            {t.cookie.message}{' '}
             <Link
               href="/cookies"
               className="text-green-400 hover:text-green-300 underline underline-offset-2"
             >
-              Learn more
+              {t.cookie.learnMore}
             </Link>
           </p>
           <button
@@ -65,13 +67,13 @@ export function CookieBanner() {
             onClick={dismiss}
             className="flex-1 px-3 py-1.5 text-xs text-neutral-300 hover:text-white border border-neutral-700 hover:border-neutral-500 rounded-lg transition-colors"
           >
-            Manage
+            {t.cookie.manage}
           </button>
           <button
             onClick={accept}
             className="flex-1 px-3 py-1.5 text-xs font-semibold bg-green-600 hover:bg-green-500 text-white rounded-lg transition-colors active:scale-95"
           >
-            Accept all
+            {t.cookie.acceptAll}
           </button>
         </div>
       </div>
