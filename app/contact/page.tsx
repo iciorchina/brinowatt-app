@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { ContactForm } from '@/components/contact/ContactForm'
-import { Mail, MapPin, Clock, Shield } from 'lucide-react'
+import { Mail, Phone, MapPin, Clock, Shield } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Contact | Brinowatt',
@@ -15,6 +15,13 @@ const channels = [
     value: 'hello@brinowatt.com',
     href: 'mailto:hello@brinowatt.com',
     note: 'For general enquiries',
+  },
+  {
+    icon: Phone,
+    label: 'Phone',
+    value: '+40 746 987 892',
+    href: 'tel:+40746987892',
+    note: 'Mon–Fri, 09:00–18:00 CET',
   },
   {
     icon: MapPin,
