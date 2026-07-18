@@ -3,9 +3,9 @@
 import { useLang } from '@/lib/i18n/LanguageContext'
 
 const cardMeta = [
-  { initials: 'FR', color: 'blue' },
-  { initials: 'DE', color: 'brand' },
-  { initials: 'PL', color: 'purple' },
+  { color: 'blue' },
+  { color: 'brand' },
+  { color: 'purple' },
 ]
 
 const colorMap: Record<string, { bg: string; text: string }> = {
@@ -21,7 +21,7 @@ export function TestimonialsSection() {
     <section className="py-24 bg-neutral-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <span className="inline-block px-4 py-1.5 bg-amber-50 text-amber-800 text-sm font-semibold rounded-full mb-4">
+          <span className="inline-block px-4 py-1.5 bg-brand-50 text-brand-700 text-sm font-semibold rounded-full mb-4">
             {t.testimonials.badge}
           </span>
           <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">
@@ -52,7 +52,7 @@ export function TestimonialsSection() {
 
                 <div className="flex items-center gap-3 pt-4 border-t border-neutral-100">
                   <div className={`w-10 h-10 ${c.bg} rounded-full flex items-center justify-center text-white font-bold text-sm flex-shrink-0`}>
-                    {meta.initials}
+                    {item.initials}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="font-semibold text-neutral-900 text-sm">{item.name}</div>
