@@ -116,12 +116,12 @@ const en = {
   testimonials: {
     badge: 'Customer stories',
     title: 'Real businesses, real numbers',
-    subtitle: 'Three projects from across Europe that started with this calculator.',
+    subtitle: 'Three small businesses that ran the numbers before spending a euro.',
     disclaimer: '* Composite stories based on typical European SME projects; names and details are illustrative. Your results depend on your site, sector, and country.',
     items: [
-      { quote: "Honestly? I came in sceptical — every vendor promises a miracle payback. But the numbers here matched the two quotes we already had on the table, so we knew nobody was inflating anything. The board approved our 50 kWp + storage project in a single sitting.", name: 'Claire M.', role: 'CFO', company: 'Packaging manufacturer, Lyon', country: 'France', savings: '≈ €42k/year', initials: 'CM' },
-      { quote: "Our electricity bill was eating us alive — the cooling runs 24/7. The calculator actually told us a battery wasn't worth it for our profile, but PV plus a heat pump was. That kind of honesty is rare in this industry.", name: 'Markus H.', role: 'Operations Director', company: 'Cold-chain logistics, Hamburg', country: 'Germany', savings: '≈ €31k/year', initials: 'MH' },
-      { quote: "I filled it in on a Tuesday morning with last year's invoices next to me. Three weeks later we had a signed offer from a local installer. My only regret is not doing this two years earlier.", name: 'Piotr N.', role: 'Facility Manager', company: 'Retail group, 14 stores, Poznań', country: 'Poland', savings: '≈ €19k/year', initials: 'PN' },
+      { quote: "Two ovens running from 4 a.m. and a wall of fridges — electricity was our second-biggest cost after flour. The calculator suggested 30 kWp and was honest about the payback: just under seven years, not the four every salesman kept promising. We signed knowing exactly what we were getting into.", name: 'Sophie L.', role: 'Owner', company: 'Family bakery, Lille', country: 'France', savings: '≈ €9,200/year', initials: 'SL' },
+      { quote: "A workshop doesn't look like a big consumer until you add up the lifts, the compressor and the paint booth. We put 25 kWp on the roof. The estimate said about €6,500 a year — after our first full year, we were within a few hundred euros of that.", name: 'Jan V.', role: 'Co-owner', company: 'Car repair workshop, Utrecht', country: 'Netherlands', savings: '≈ €6,500/year', initials: 'JV' },
+      { quote: "We're seasonal — packed from May to October, quiet all winter. I'd assumed solar made no sense for a business like ours. The calculator showed the opposite: peak sun is exactly our peak season. Panels plus a heat pump for hot water, and summer now pays for the winter.", name: 'Elena K.', role: 'Owner-manager', company: '12-room guesthouse, Crete', country: 'Greece', savings: '≈ €11,800/year', initials: 'EK' },
     ],
   },
   faq: {
@@ -341,12 +341,12 @@ const ro: Dictionary = {
   testimonials: {
     badge: 'Povești de la clienți',
     title: 'Afaceri reale, cifre reale',
-    subtitle: 'Trei proiecte care au început cu acest calculator.',
+    subtitle: 'Trei afaceri mici care au făcut calculul înainte să cheltuiască un euro.',
     disclaimer: '* Povești compozite bazate pe proiecte tipice ale IMM-urilor europene; numele și detaliile sunt ilustrative. Rezultatele tale depind de locație, sector și țară.',
     items: [
-      { quote: 'Sincer? Am intrat sceptic — toți furnizorii promit amortizări-minune. Dar cifrele de aici s-au potrivit cu cele două oferte pe care le aveam deja pe masă, deci am știut că nimeni nu umflă nimic. Consiliul a aprobat proiectul de 50 kWp cu stocare într-o singură ședință.', name: 'Andrei P.', role: 'Director General', company: 'Fabrică de mobilă, Cluj-Napoca', country: 'România', savings: '≈ 42.000 €/an', initials: 'AP' },
-      { quote: 'Factura la curent ne mânca de vii — cuptoarele merg non-stop. Calculatorul ne-a spus cinstit că bateria nu se justifică la profilul nostru, dar fotovoltaicele plus pompa de căldură, da. Genul ăsta de sinceritate e rar în domeniu.', name: 'Ioana M.', role: 'Director Financiar', company: 'Lanț de panificație, București', country: 'România', savings: '≈ 31.000 €/an', initials: 'IM' },
-      { quote: 'Am completat formularul într-o marți dimineața, cu facturile de anul trecut lângă mine. În trei săptămâni aveam ofertă semnată de la un instalator local. Singurul regret e că n-am făcut asta acum doi ani.', name: 'Mihai S.', role: 'Administrator', company: 'Depozit logistic, Timișoara', country: 'România', savings: '≈ 19.000 €/an', initials: 'MS' },
+      { quote: 'Două cuptoare pornite de la 4 dimineața și un perete întreg de frigidere — curentul era a doua cheltuială după făină. Calculatorul mi-a propus 30 kWp și mi-a spus cinstit amortizarea: puțin sub șapte ani, nu patru, cum promitea fiecare agent de vânzări. Am semnat știind exact în ce ne băgăm.', name: 'Corina B.', role: 'Proprietară', company: 'Brutărie artizanală, Oradea', country: 'România', savings: '≈ 9.200 €/an', initials: 'CB' },
+      { quote: 'Un service nu pare mare consumator până nu aduni elevatoarele, compresorul și cabina de vopsit. Am pus 25 kWp pe acoperiș. Estimarea zicea cam 6.500 € pe an — după primul an întreg, eram la câteva sute de euro de cifra aia.', name: 'Radu C.', role: 'Proprietar', company: 'Service auto, Pitești', country: 'România', savings: '≈ 6.500 €/an', initials: 'RC' },
+      { quote: 'Avem pensiune la munte — plin vara, doar weekenduri iarna. Eram convinsă că solarul n-are sens pentru noi. Calculatorul a arătat fix invers: vârful de soare e chiar vârful nostru de sezon. Panouri plus pompă de căldură pentru apă caldă, iar vara ne plătește acum iernile.', name: 'Maria D.', role: 'Administrator', company: 'Pensiune cu 12 camere, Bran', country: 'România', savings: '≈ 11.000 €/an', initials: 'MD' },
     ],
   },
   faq: {
@@ -534,12 +534,12 @@ const it: Dictionary = {
   testimonials: {
     badge: 'Storie dei clienti',
     title: 'Aziende vere, numeri veri',
-    subtitle: 'Tre progetti che sono partiti da questo calcolatore.',
+    subtitle: 'Tre piccole imprese che hanno fatto i conti prima di spendere un euro.',
     disclaimer: '* Storie composite basate su progetti tipici di PMI europee; nomi e dettagli sono illustrativi. I tuoi risultati dipendono da sito, settore e Paese.',
     items: [
-      { quote: "Lo ammetto: ero scettica — ogni fornitore promette rientri miracolosi. Ma i numeri qui coincidevano con i due preventivi che avevamo già sul tavolo, quindi sapevamo che nessuno stava gonfiando nulla. Il CdA ha approvato il progetto da 50 kWp con accumulo in una sola seduta.", name: 'Giulia F.', role: 'Direttrice finanziaria', company: 'Azienda di packaging, Parma', country: 'Italia', savings: '≈ €42.000/anno', initials: 'GF' },
-      { quote: "La bolletta elettrica ci stava mangiando vivi — le celle frigorifere girano 24 ore su 24. Il calcolatore ci ha detto onestamente che la batteria non conveniva per il nostro profilo, ma fotovoltaico più pompa di calore sì. Questa sincerità è rara nel settore.", name: 'Marco C.', role: 'Responsabile operazioni', company: 'Logistica del freddo, Verona', country: 'Italia', savings: '≈ €31.000/anno', initials: 'MC' },
-      { quote: "L'ho compilato un martedì mattina con le fatture dell'anno scorso accanto. Tre settimane dopo avevamo un'offerta firmata da un installatore locale. L'unico rimpianto è non averlo fatto due anni prima.", name: 'Alessandro G.', role: 'Facility manager', company: 'Catena retail, 12 punti vendita, Bari', country: 'Italia', savings: '≈ €19.000/anno', initials: 'AG' },
+      { quote: "Due forni accesi dalle 4 del mattino e una parete di frigoriferi — la corrente era la seconda voce di spesa dopo la farina. Il calcolatore mi ha proposto 30 kWp ed è stato onesto sul rientro: poco meno di sette anni, non i quattro che promettevano tutti i venditori. Ho firmato sapendo esattamente dove mi stavo infilando.", name: 'Paola B.', role: 'Titolare', company: 'Panificio artigianale, Bologna', country: 'Italia', savings: '≈ €9.200/anno', initials: 'PB' },
+      { quote: "Un'officina non sembra un grande consumatore finché non sommi i ponti, il compressore e la cabina di verniciatura. Abbiamo messo 25 kWp sul tetto. La stima diceva circa 6.500 € l'anno — dopo il primo anno intero eravamo a poche centinaia di euro da quella cifra.", name: 'Luca M.', role: 'Contitolare', company: 'Officina meccanica, Brescia', country: 'Italia', savings: '≈ €6.500/anno', initials: 'LM' },
+      { quote: "Siamo stagionali — pieni da maggio a ottobre, fermi d'inverno. Ero convinto che il solare non avesse senso per noi. Il calcolatore ha mostrato l'esatto contrario: il picco di sole è proprio la nostra alta stagione. Pannelli più pompa di calore per l'acqua calda, e l'estate ora ci paga l'inverno.", name: 'Stefano R.', role: 'Gestore', company: 'Agriturismo con 12 camere, Puglia', country: 'Italia', savings: '≈ €11.800/anno', initials: 'SR' },
     ],
   },
   faq: {
@@ -727,12 +727,12 @@ const de: Dictionary = {
   testimonials: {
     badge: 'Kundenstimmen',
     title: 'Echte Unternehmen, echte Zahlen',
-    subtitle: 'Drei Projekte, die mit diesem Rechner begonnen haben.',
+    subtitle: 'Drei kleine Betriebe, die erst gerechnet und dann investiert haben.',
     disclaimer: '* Zusammengesetzte Geschichten auf Basis typischer europäischer KMU-Projekte; Namen und Details sind illustrativ. Ihre Ergebnisse hängen von Standort, Branche und Land ab.',
     items: [
-      { quote: 'Ehrlich gesagt war ich skeptisch — jeder Anbieter verspricht Wunder-Amortisationen. Aber die Zahlen hier deckten sich mit den zwei Angeboten, die wir bereits auf dem Tisch hatten. Da wussten wir: Hier schönt niemand etwas. Die Geschäftsführung hat das 50-kWp-Projekt mit Speicher in einer Sitzung freigegeben.', name: 'Katharina W.', role: 'Geschäftsführerin', company: 'Metallverarbeitung, Reutlingen', country: 'Deutschland', savings: '≈ 42.000 €/Jahr', initials: 'KW' },
-      { quote: 'Die Stromrechnung hat uns aufgefressen — die Kühlung läuft rund um die Uhr. Der Rechner hat uns ehrlich gesagt, dass sich ein Speicher für unser Profil nicht lohnt, PV plus Wärmepumpe aber schon. Diese Ehrlichkeit ist selten in der Branche.', name: 'Stefan B.', role: 'Betriebsleiter', company: 'Kühllogistik, Hamburg', country: 'Deutschland', savings: '≈ 31.000 €/Jahr', initials: 'SB' },
-      { quote: 'Ich habe das Formular an einem Dienstagmorgen ausgefüllt, die Rechnungen vom Vorjahr daneben. Drei Wochen später hatten wir ein unterschriebenes Angebot von einem Installateur aus der Region. Mein einziges Bedauern: dass wir das nicht schon vor zwei Jahren gemacht haben.', name: 'Thomas K.', role: 'Facility Manager', company: 'Einzelhandelskette, 14 Filialen, Leipzig', country: 'Deutschland', savings: '≈ 19.000 €/Jahr', initials: 'TK' },
+      { quote: 'Zwei Öfen ab vier Uhr morgens und eine Wand voller Kühlschränke — Strom war unser zweitgrößter Kostenpunkt nach dem Mehl. Der Rechner schlug 30 kWp vor und war ehrlich bei der Amortisation: knapp sieben Jahre, nicht die vier, die jeder Verkäufer versprochen hat. Wir haben unterschrieben und wussten genau, worauf wir uns einlassen.', name: 'Anja S.', role: 'Inhaberin', company: 'Bäckerei, Nürnberg', country: 'Deutschland', savings: '≈ 9.200 €/Jahr', initials: 'AS' },
+      { quote: 'Eine Werkstatt wirkt nicht wie ein Großverbraucher — bis man Hebebühnen, Kompressor und Lackierkabine zusammenrechnet. Wir haben 25 kWp aufs Dach gesetzt. Die Schätzung lag bei rund 6.500 € im Jahr — nach dem ersten vollen Jahr waren wir nur ein paar hundert Euro davon entfernt.', name: 'Michael R.', role: 'Mitinhaber', company: 'Kfz-Werkstatt, Kassel', country: 'Deutschland', savings: '≈ 6.500 €/Jahr', initials: 'MR' },
+      { quote: 'Unsere alte Gasheizung stand ohnehin zum Austausch an. Der Rechner hat Gas gegen Wärmepumpe für unser Haus durchgerechnet — mit unseren Preisen, nicht mit Broschürenwerten. Zusammen mit PV auf dem Dach spart uns das jeden Winter bares Geld.', name: 'Sabine H.', role: 'Betreiberin', company: 'Pension mit 14 Zimmern, Allgäu', country: 'Deutschland', savings: '≈ 12.000 €/Jahr', initials: 'SH' },
     ],
   },
   faq: {
