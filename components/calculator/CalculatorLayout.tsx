@@ -17,7 +17,7 @@ export function CalculatorLayout({ currentStep, steps, stepTitles, progress, chi
   const currentIndex = steps.indexOf(currentStep)
 
   return (
-    <div className="min-h-screen bg-neutral-50 py-8">
+    <div className="min-h-screen bg-neutral-50 pt-24 lg:pt-28 pb-8">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-8">
