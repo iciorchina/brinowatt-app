@@ -10,7 +10,7 @@ export const ASSUMPTIONS: AssumptionsConfig = {
   pvPanelEfficiencyPercent: 20,         // modern monocrystalline panels ~20%
   pvDegradationRatePercent: 0.5,        // 0.5% annual output degradation
   pvLifespanYears: 25,
-  pvDefaultInstallCostPerKWp: 1100,     // EUR/kWp all-in (EU SME average 2024)
+  pvDefaultInstallCostPerKWp: 800,      // EUR/kWp all-in (client-set price)
   pvAreaPerKWp: 5.5,                    // m² per kWp (standard panels)
   pvInverterEfficiencyPercent: 97,
   pvSelfConsumptionBasePercent: 35,     // typical SME without battery
@@ -20,7 +20,7 @@ export const ASSUMPTIONS: AssumptionsConfig = {
 
   // ── Battery Energy Storage ───────────────────────────────────────────────
   bessLifespanYears: 12,
-  bessDefaultCostPerKWh: 600,           // EUR/kWh installed (LFP 2024 EU avg)
+  bessDefaultCostPerKWh: 200,           // EUR/kWh installed (client-set price)
   bessRoundTripEfficiencyPercent: 93,
   bessDepthOfDischargePct: 90,
   bessCyclesPerYear: 300,
