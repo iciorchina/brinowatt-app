@@ -141,7 +141,7 @@ export function HeroSection() {
 
                   <div className="p-4 rounded-2xl bg-slate-50 border border-slate-100">
                     <p className="text-xs text-slate-500 font-medium mb-1">{t.hero.card.paybackPeriod}</p>
-                    <p className="text-xl font-bold text-slate-800">6.2 yrs</p>
+                    <p className="text-xl font-bold text-slate-800">6.2 {t.hero.card.yearsUnit}</p>
                     <p className="text-xs text-slate-400 mt-0.5">{t.hero.card.fromInvestment}</p>
                   </div>
 
@@ -149,7 +149,7 @@ export function HeroSection() {
                     <p className="text-xs text-slate-500 font-medium mb-1">{t.hero.card.co2Reduction}</p>
                     <div className="flex items-center gap-1.5">
                       <Leaf className="w-4 h-4 text-green-500" />
-                      <p className="text-xl font-bold text-slate-800">22 t/yr</p>
+                      <p className="text-xl font-bold text-slate-800">22 {t.hero.card.tonsUnit}</p>
                     </div>
                     <p className="text-xs text-slate-400 mt-0.5">{t.hero.card.annualOffset}</p>
                   </div>

@@ -13,7 +13,7 @@ export default function TermsPage() {
         <div className="mb-10 pb-8 border-b border-neutral-100">
           <Link href="/" className="text-sm text-brand-600 hover:underline mb-4 inline-block">← Back to Home</Link>
           <h1 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-3">Terms of Service</h1>
-          <p className="text-neutral-500 text-sm">Last updated: <strong>1 April 2024</strong></p>
+          <p className="text-neutral-500 text-sm">Last updated: <strong>19 July 2026</strong></p>
           <div className="mt-4 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl text-amber-800 text-sm">
             <strong>Note:</strong> This is a placeholder Terms of Service page. Please replace with a legally reviewed document before launching your application.
           </div>

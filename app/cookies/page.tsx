@@ -44,7 +44,7 @@ export default function CookiesPage() {
         <div className="mb-10 pb-8 border-b border-neutral-100">
           <Link href="/" className="text-sm text-brand-600 hover:underline mb-4 inline-block">← Back to Home</Link>
           <h1 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-3">Cookie Policy</h1>
-          <p className="text-neutral-500 text-sm">Last updated: <strong>1 April 2024</strong></p>
+          <p className="text-neutral-500 text-sm">Last updated: <strong>19 July 2026</strong></p>
         </div>
 
         <div className="space-y-8 text-neutral-700 leading-relaxed">

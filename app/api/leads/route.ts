@@ -58,7 +58,8 @@ export async function POST(req: NextRequest): Promise<NextResponse<LeadSubmissio
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const secret = process.env.LEAD_STORAGE_SECRET
   const auth = req.headers.get('authorization')
-  if (secret && auth !== `Bearer ${secret}`) {
+  // Fail closed: without a configured secret this endpoint must never expose leads
+  if (!secret || auth !== `Bearer ${secret}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
   return NextResponse.json({

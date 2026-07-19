@@ -63,12 +63,12 @@ export function CookieBanner() {
           </button>
         </div>
         <div className="flex items-center gap-2">
-          <button
-            onClick={dismiss}
-            className="flex-1 px-3 py-1.5 text-xs text-neutral-300 hover:text-white border border-neutral-700 hover:border-neutral-500 rounded-lg transition-colors"
+          <Link
+            href="/cookies"
+            className="flex-1 px-3 py-1.5 text-xs text-center text-neutral-300 hover:text-white border border-neutral-700 hover:border-neutral-500 rounded-lg transition-colors"
           >
             {t.cookie.manage}
-          </button>
+          </Link>
           <button
             onClick={accept}
             className="flex-1 px-3 py-1.5 text-xs font-semibold bg-green-600 hover:bg-green-500 text-white rounded-lg transition-colors active:scale-95"

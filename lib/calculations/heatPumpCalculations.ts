@@ -31,12 +31,15 @@ export function calculateHeatPump(formData: Partial<FormData>): HeatPumpResults 
   const heatLoadW = buildingSize * A.hpSizingWperM2
   const heatPumpSizeKW = Math.max(5, Math.ceil(heatLoadW / 1000))
 
+  // Number() handles react-hook-form string values; || treats 0/'' (the form
+  // defaults for these optional fields) as "not provided" and falls back to
+  // the building-size estimate — 0 heating demand is never a real input here.
   const annualHeatingDemand =
-    formData.annualHeatingDemand ?? buildingSize * 80
+    Number(formData.annualHeatingDemand) || buildingSize * 80
 
   const heatingCostPerKWh = HEATING_COST_PER_KWH[heatingType]
   const annualCurrentEnergyCost =
-    formData.annualHeatingCost ?? annualHeatingDemand * heatingCostPerKWh
+    Number(formData.annualHeatingCost) || annualHeatingDemand * heatingCostPerKWh
 
   const cop = A.hpCOPDefault
   const annualHeatPumpElectricityKWh = annualHeatingDemand / cop

@@ -31,9 +31,6 @@ export const metadata: Metadata = {
     description:
       'Calculate your savings from solar, batteries & heat pumps in minutes.',
   },
-  alternates: {
-    canonical: SITE_URL,
-  },
 }
 
 const organizationSchema = {

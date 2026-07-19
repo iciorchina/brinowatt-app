@@ -15,7 +15,7 @@ export default function PrivacyPage() {
           <Link href="/" className="text-sm text-brand-600 hover:underline mb-4 inline-block">← Back to Home</Link>
           <h1 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-3">Privacy Policy</h1>
           <p className="text-neutral-500 text-sm">
-            Last updated: <strong>1 April 2024</strong> · Effective date: <strong>1 April 2024</strong>
+            Last updated: <strong>19 July 2026</strong> · Effective date: <strong>19 July 2026</strong>
           </p>
           <div className="mt-4 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl text-amber-800 text-sm">
             <strong>Note:</strong> This is a template privacy policy for development purposes. Before launching your application, please replace this with a legally reviewed privacy policy prepared by a qualified legal professional in your jurisdiction.
@@ -177,7 +177,7 @@ export default function PrivacyPage() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-neutral-100 flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
-          <p className="text-sm text-neutral-400">© 2024 Brinowatt. All rights reserved.</p>
+          <p className="text-sm text-neutral-400">© 2026 Brinowatt. All rights reserved.</p>
           <div className="flex gap-4 text-sm">
             <Link href="/" className="text-brand-600 hover:underline">Home</Link>
             <Link href="/calculator" className="text-brand-600 hover:underline">Calculator</Link>
