@@ -1,6 +1,9 @@
+'use client'
+
 import type { CombinedResults, PVResults, BESSResults, HeatPumpResults } from '@/types'
 import { TrendingUp, DollarSign, BarChart2, Sun, Leaf, Thermometer } from 'lucide-react'
 import { formatCurrency, formatPercent, formatKWh, formatTonnesCO2 } from '@/lib/utils/formatters'
+import { useCalcT } from '@/lib/i18n/calc'
 
 interface Props {
   results: CombinedResults
@@ -10,37 +13,25 @@ interface Props {
 }
 
 export function KPICards({ results, pvResults, bessResults, hpResults }: Props) {
+  const ct = useCalcT()
+  const k = ct.results.kpi
+
   const cards = [
     {
-      icon: TrendingUp,
-      label: 'Energy Cost Reduction',
-      value: formatPercent(results.energyCostReductionPercent),
-      sub: 'Of current energy spend',
-      iconBg: 'bg-brand-100',
-      iconColor: 'text-brand-700',
-      valueBg: 'bg-brand-50',
+      icon: TrendingUp, label: k.costReduction, value: formatPercent(results.energyCostReductionPercent),
+      sub: k.costReductionSub, iconBg: 'bg-brand-100', iconColor: 'text-brand-700', valueBg: 'bg-brand-50',
     },
     {
-      icon: DollarSign,
-      label: 'Net Present Value',
-      value: formatCurrency(results.npv),
-      sub: '20-yr NPV at 5% discount',
-      iconBg: 'bg-blue-100',
-      iconColor: 'text-blue-700',
-      valueBg: 'bg-blue-50',
+      icon: DollarSign, label: k.npv, value: formatCurrency(results.npv),
+      sub: k.npvSub, iconBg: 'bg-blue-100', iconColor: 'text-blue-700', valueBg: 'bg-blue-50',
     },
     {
-      icon: BarChart2,
-      label: 'ROI at 10 Years',
-      value: formatPercent(results.roi10Years),
-      sub: 'Return on total investment',
-      iconBg: 'bg-purple-100',
-      iconColor: 'text-purple-700',
-      valueBg: 'bg-purple-50',
+      icon: BarChart2, label: k.roi10, value: formatPercent(results.roi10Years),
+      sub: k.roi10Sub, iconBg: 'bg-purple-100', iconColor: 'text-purple-700', valueBg: 'bg-purple-50',
     },
     {
       icon: Sun,
-      label: pvResults ? 'Self-Consumption Rate' : bessResults ? 'Self-Consumption Boost' : 'HP Annual Output',
+      label: pvResults ? k.selfConsumption : bessResults ? k.selfConsumptionBoost : k.hpOutput,
       value: pvResults
         ? formatPercent(pvResults.selfConsumptionRate)
         : bessResults
@@ -48,36 +39,23 @@ export function KPICards({ results, pvResults, bessResults, hpResults }: Props) 
         : hpResults
         ? formatKWh(hpResults.annualHeatPumpElectricityKWh)
         : '—',
-      sub: pvResults
-        ? 'PV generation used on-site'
-        : bessResults
-        ? 'Additional self-consumption'
-        : 'Heat pump electricity use',
-      iconBg: 'bg-amber-100',
-      iconColor: 'text-amber-700',
-      valueBg: 'bg-amber-50',
+      sub: pvResults ? k.selfConsumptionSub : bessResults ? k.selfConsumptionBoostSub : k.hpOutputSub,
+      iconBg: 'bg-amber-100', iconColor: 'text-amber-700', valueBg: 'bg-amber-50',
     },
     {
-      icon: Leaf,
-      label: 'CO₂ Reduction',
-      value: formatTonnesCO2(results.totalCo2ReductionTonnes),
-      sub: 'Annual carbon savings',
-      iconBg: 'bg-teal-100',
-      iconColor: 'text-teal-700',
-      valueBg: 'bg-teal-50',
+      icon: Leaf, label: k.co2, value: formatTonnesCO2(results.totalCo2ReductionTonnes, ct.units.tCo2),
+      sub: k.co2Sub, iconBg: 'bg-teal-100', iconColor: 'text-teal-700', valueBg: 'bg-teal-50',
     },
     {
       icon: Thermometer,
-      label: pvResults ? 'Annual PV Production' : hpResults ? 'Heating Cost Saved' : 'Annual Benefit',
+      label: pvResults ? k.pvProduction : hpResults ? k.heatingSaved : k.annualBenefit,
       value: pvResults
         ? formatKWh(pvResults.annualProductionKWh)
         : hpResults
-        ? formatCurrency(hpResults.annualSavings) + '/yr'
-        : formatCurrency(results.totalAnnualSavings) + '/yr',
-      sub: pvResults ? 'Est. solar generation' : hpResults ? 'vs current heating fuel' : 'Total energy savings',
-      iconBg: 'bg-rose-100',
-      iconColor: 'text-rose-700',
-      valueBg: 'bg-rose-50',
+        ? formatCurrency(hpResults.annualSavings) + ct.units.perYr
+        : formatCurrency(results.totalAnnualSavings) + ct.units.perYr,
+      sub: pvResults ? k.pvProductionSub : hpResults ? k.heatingSavedSub : k.annualBenefitSub,
+      iconBg: 'bg-rose-100', iconColor: 'text-rose-700', valueBg: 'bg-rose-50',
     },
   ]
 

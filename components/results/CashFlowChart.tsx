@@ -13,6 +13,7 @@ import {
 } from 'recharts'
 import type { CashFlowPoint } from '@/types'
 import { formatCurrency } from '@/lib/utils/formatters'
+import { useCalcT, tpl } from '@/lib/i18n/calc'
 
 interface Props {
   data: CashFlowPoint[]
@@ -31,11 +32,11 @@ interface TooltipPayload {
   color: string
 }
 
-function CustomTooltip({ active, payload, label }: { active?: boolean; payload?: TooltipPayload[]; label?: number }) {
+function CustomTooltip({ active, payload, label, yearLabel }: { active?: boolean; payload?: TooltipPayload[]; label?: number; yearLabel: string }) {
   if (!active || !payload?.length) return null
   return (
     <div className="bg-white border border-neutral-200 rounded-xl shadow-lg p-3 text-sm">
-      <p className="font-semibold text-neutral-900 mb-2">Year {label}</p>
+      <p className="font-semibold text-neutral-900 mb-2">{yearLabel} {label}</p>
       {payload.map((entry) => (
         <div key={entry.name} className="flex items-center gap-2 mb-1">
           <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: entry.color }} />
@@ -48,14 +49,16 @@ function CustomTooltip({ active, payload, label }: { active?: boolean; payload?:
 }
 
 export function CashFlowChart({ data, capex }: Props) {
+  const ct = useCalcT()
+  const c = ct.results.cashflow
   // Find the break-even year
   const breakEvenYear = data.find((d) => d.cumulativeCashFlow >= 0)?.year
 
   return (
     <div className="bg-white rounded-2xl border border-neutral-100 shadow-card p-5 md:p-6">
       <div className="mb-5">
-        <h3 className="text-base font-bold text-neutral-900">20-Year Cash Flow Projection</h3>
-        <p className="text-sm text-neutral-500 mt-0.5">Cumulative savings vs. net position after investment</p>
+        <h3 className="text-base font-bold text-neutral-900">{c.title}</h3>
+        <p className="text-sm text-neutral-500 mt-0.5">{c.subtitle}</p>
       </div>
       <ResponsiveContainer width="100%" height={300}>
         <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
@@ -75,7 +78,7 @@ export function CashFlowChart({ data, capex }: Props) {
             tick={{ fontSize: 11, fill: '#94a3b8' }}
             tickLine={false}
             axisLine={false}
-            label={{ value: 'Year', position: 'insideBottomRight', offset: -5, fontSize: 11, fill: '#94a3b8' }}
+            label={{ value: c.year, position: 'insideBottomRight', offset: -5, fontSize: 11, fill: '#94a3b8' }}
           />
           <YAxis
             tickFormatter={formatYAxis}
@@ -84,7 +87,7 @@ export function CashFlowChart({ data, capex }: Props) {
             axisLine={false}
             width={60}
           />
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip content={<CustomTooltip yearLabel={c.year} />} />
           <Legend
             wrapperStyle={{ fontSize: 12, paddingTop: 12 }}
             formatter={(value) => <span className="text-neutral-600">{value}</span>}
@@ -95,14 +98,14 @@ export function CashFlowChart({ data, capex }: Props) {
               stroke="#f59e0b"
               strokeDasharray="4 4"
               strokeWidth={2}
-              label={{ value: `Break-even Yr ${breakEvenYear}`, position: 'top', fontSize: 10, fill: '#d97706' }}
+              label={{ value: tpl(c.breakEven, { year: breakEvenYear }), position: 'top', fontSize: 10, fill: '#d97706' }}
             />
           )}
           <ReferenceLine y={0} stroke="#cbd5e1" strokeWidth={1} />
           <Area
             type="monotone"
             dataKey="cumulativeSavings"
-            name="Cumulative Savings"
+            name={c.cumulativeSavings}
             stroke="#22c55e"
             strokeWidth={2}
             fill="url(#savingsGrad)"
@@ -112,7 +115,7 @@ export function CashFlowChart({ data, capex }: Props) {
           <Area
             type="monotone"
             dataKey="cumulativeCashFlow"
-            name="Net Cash Position"
+            name={c.netCashPosition}
             stroke="#3b82f6"
             strokeWidth={2}
             fill="url(#cashFlowGrad)"

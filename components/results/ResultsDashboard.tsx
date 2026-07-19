@@ -11,17 +11,10 @@ import { KPICards } from './KPICards'
 import { SystemSummaryCards } from './SystemSummaryCards'
 import { ROITimeline } from './ROITimeline'
 import { LeadCapturePanel } from './LeadCapturePanel'
-
-const SOLUTION_LABELS: Record<string, string> = {
-  pv: 'Solar PV System',
-  bess: 'Battery Storage System',
-  heatpump: 'Heat Pump System',
-  pv_bess: 'Solar PV + Battery Storage',
-  pv_heatpump: 'Solar PV + Heat Pump',
-  full_hybrid: 'Full Hybrid Energy System',
-}
+import { useCalcT } from '@/lib/i18n/calc'
 
 export function ResultsDashboard() {
+  const ct = useCalcT()
   const [fullResults, setFullResults] = useState<CalculationResults | null>(null)
   const [activeScenario, setActiveScenario] = useState<Scenario>('standard')
   const [loading, setLoading] = useState(true)
@@ -47,7 +40,7 @@ export function ResultsDashboard() {
       <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-brand-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-neutral-500">Loading your results…</p>
+          <p className="text-neutral-500">{ct.results.loading}</p>
         </div>
       </div>
     )
@@ -62,15 +55,15 @@ export function ResultsDashboard() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
-          <h2 className="text-xl font-bold text-neutral-900 mb-2">No Results Found</h2>
+          <h2 className="text-xl font-bold text-neutral-900 mb-2">{ct.results.noResultsTitle}</h2>
           <p className="text-neutral-500 mb-6">
-            It looks like your calculation results weren't saved. Please run the calculator again.
+            {ct.results.noResultsBody}
           </p>
           <Link
             href="/calculator"
             className="inline-flex items-center gap-2 px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition-colors"
           >
-            Start Calculator
+            {ct.results.startCalculator}
           </Link>
         </div>
       </div>
@@ -84,7 +77,7 @@ export function ResultsDashboard() {
       : fullResults.scenarios[activeScenario]
 
   const solutionLabel =
-    SOLUTION_LABELS[fullResults.formData?.selectedSolution ?? 'pv'] ?? 'Energy System'
+    ct.results.solutionLabels[(fullResults.formData?.selectedSolution ?? 'pv') as keyof typeof ct.results.solutionLabels] ?? 'Energy System'
 
   return (
     <div className="min-h-screen bg-neutral-50 pt-16 lg:pt-20">
@@ -152,7 +145,7 @@ export function ResultsDashboard() {
 
         {/* Disclaimer */}
         <p className="text-center text-neutral-400 text-xs pb-4">
-          ⚠ These estimates are indicative and based on publicly available data and standard assumptions. Actual results will vary based on site-specific conditions, equipment specifications, local regulations, and market prices. A detailed site assessment is required for precise calculations.
+          {ct.results.disclaimerFooter}
         </p>
       </div>
     </div>

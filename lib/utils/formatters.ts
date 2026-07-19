@@ -28,14 +28,14 @@ export function formatPercent(value: number, decimals = 0): string {
   return `${formatNumber(value, decimals)}%`
 }
 
-export function formatYears(years: number): string {
-  if (years >= 100) return '> 30 yrs'
-  if (years === Math.floor(years)) return `${years} yrs`
-  return `${years.toFixed(1)} yrs`
+export function formatYears(years: number, unit = 'yrs'): string {
+  if (years >= 100) return `> 30 ${unit}`
+  if (years === Math.floor(years)) return `${years} ${unit}`
+  return `${years.toFixed(1)} ${unit}`
 }
 
-export function formatTonnesCO2(tonnes: number): string {
-  return `${formatNumber(tonnes, 1)} t CO₂/yr`
+export function formatTonnesCO2(tonnes: number, unit = 't CO₂/yr'): string {
+  return `${formatNumber(tonnes, 1)} ${unit}`
 }
 
 export function cn(...classes: (string | undefined | null | false)[]): string {

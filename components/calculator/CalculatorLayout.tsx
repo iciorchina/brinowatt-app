@@ -1,5 +1,8 @@
+'use client'
+
 import type { CalculatorStep } from '@/components/calculator/CalculatorClient'
 import { CheckCircle2 } from 'lucide-react'
+import { useCalcT, tpl } from '@/lib/i18n/calc'
 
 interface Props {
   currentStep: CalculatorStep
@@ -10,16 +13,17 @@ interface Props {
 }
 
 export function CalculatorLayout({ currentStep, steps, stepTitles, progress, children }: Props) {
+  const ct = useCalcT()
   const currentIndex = steps.indexOf(currentStep)
 
   return (
-    <div className="min-h-screen bg-neutral-50 pt-20 lg:pt-24 pb-8">
+    <div className="min-h-screen bg-neutral-50 py-8">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-neutral-900">Brinowatt Calculator</h1>
+          <h1 className="text-2xl font-bold text-neutral-900">{ct.wizard.title}</h1>
           <p className="text-neutral-500 text-sm mt-1">
-            Step {currentIndex + 1} of {steps.length} — {stepTitles[currentStep]}
+            {tpl(ct.wizard.stepOf, { current: currentIndex + 1, total: steps.length, title: stepTitles[currentStep] })}
           </p>
         </div>
 
@@ -63,7 +67,7 @@ export function CalculatorLayout({ currentStep, steps, stepTitles, progress, chi
 
         {/* Disclaimer */}
         <p className="text-center text-neutral-400 text-xs mt-6">
-          All estimates are indicative. Results depend on site-specific conditions and market prices. A detailed assessment will be provided upon request.
+          {ct.wizard.disclaimer}
         </p>
       </div>
     </div>

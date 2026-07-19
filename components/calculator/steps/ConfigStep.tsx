@@ -1,7 +1,8 @@
 'use client'
 import { useForm } from 'react-hook-form'
-import type { FormData, SolutionType, RoofType, HeatingType } from '@/types'
+import type { FormData } from '@/types'
 import { ArrowRight, ArrowLeft, HelpCircle } from 'lucide-react'
+import { useCalcT } from '@/lib/i18n/calc'
 
 interface Props {
   formData: Partial<FormData>
@@ -11,6 +12,8 @@ interface Props {
 }
 
 export function ConfigStep({ formData, updateFormData, onNext, onBack }: Props) {
+  const ct = useCalcT()
+  const c = ct.wizard.config
   const solution = formData.selectedSolution ?? 'pv'
   const hasPV = ['pv', 'pv_bess', 'pv_heatpump', 'full_hybrid'].includes(solution)
   const hasBESS = ['bess', 'pv_bess', 'full_hybrid'].includes(solution)
@@ -46,11 +49,11 @@ export function ConfigStep({ formData, updateFormData, onNext, onBack }: Props) 
   )
 
   const Toggle = ({ name, label, description }: { name: string; label: string; description?: string }) => {
-    const value = watch(name as any)
+    const value = watch(name as never)
     return (
       <label className="flex items-start gap-4 p-4 border border-neutral-200 rounded-xl cursor-pointer hover:bg-neutral-50 transition-colors">
         <div className="relative flex-shrink-0 mt-0.5">
-          <input type="checkbox" {...register(name as any)} className="sr-only" />
+          <input type="checkbox" {...register(name as never)} className="sr-only" />
           <div className={`w-11 h-6 rounded-full transition-colors ${value ? 'bg-brand-600' : 'bg-neutral-300'}`}>
             <div className={`w-4 h-4 bg-white rounded-full shadow absolute top-1 transition-transform ${value ? 'translate-x-6' : 'translate-x-1'}`} />
           </div>
@@ -63,27 +66,31 @@ export function ConfigStep({ formData, updateFormData, onNext, onBack }: Props) 
     )
   }
 
+  const roofOptions = [
+    { value: 'flat', label: c.flat },
+    { value: 'pitched', label: c.pitched },
+    { value: 'ground_mounted', label: c.ground },
+  ]
+
+  const heatingKeys = ['gas', 'oil', 'electric', 'district', 'biomass', 'other'] as const
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-neutral-900 mb-2">System configuration</h2>
-        <p className="text-neutral-500">Tell us a bit more about your site and preferences so we can size the system accurately.</p>
+        <h2 className="text-2xl font-bold text-neutral-900 mb-2">{c.title}</h2>
+        <p className="text-neutral-500">{c.subtitle}</p>
       </div>
 
       <div className="space-y-8">
         {/* PV Configuration */}
         {hasPV && (
           <div>
-            <h3 className="text-base font-semibold text-neutral-800 mb-4 pb-2 border-b border-neutral-100">☀️ Solar PV Configuration</h3>
+            <h3 className="text-base font-semibold text-neutral-800 mb-4 pb-2 border-b border-neutral-100">{c.pvSection}</h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-1.5">Installation Type</label>
+                <label className="block text-sm font-medium text-neutral-700 mb-1.5">{c.installType}</label>
                 <div className="grid grid-cols-3 gap-3">
-                  {[
-                    { value: 'flat', label: 'Flat Roof' },
-                    { value: 'pitched', label: 'Pitched Roof' },
-                    { value: 'ground_mounted', label: 'Ground Mount' },
-                  ].map(opt => (
+                  {roofOptions.map(opt => (
                     <label key={opt.value} className="cursor-pointer">
                       <input type="radio" {...register('roofType')} value={opt.value} className="sr-only" />
                       <div className={`p-3 text-center text-sm font-medium rounded-xl border-2 transition-all
@@ -99,8 +106,8 @@ export function ConfigStep({ formData, updateFormData, onNext, onBack }: Props) 
               </div>
               <div>
                 <div className="flex items-center gap-2 mb-1.5">
-                  <label className="text-sm font-medium text-neutral-700">Available Area</label>
-                  <Tooltip text="Total roof or ground area available for panel installation. We calculate the optimal system size from this." />
+                  <label className="text-sm font-medium text-neutral-700">{c.area}</label>
+                  <Tooltip text={c.areaTooltip} />
                 </div>
                 <div className="relative">
                   <input
@@ -112,8 +119,8 @@ export function ConfigStep({ formData, updateFormData, onNext, onBack }: Props) 
                 </div>
               </div>
               <div className="space-y-3">
-                <Toggle name="selfConsumptionPriority" label="Prioritise self-consumption" description="Size the system to maximise own-use rather than export." />
-                <Toggle name="gridExportAllowed" label="Grid export allowed" description="We can assume surplus energy is exported at the feed-in tariff." />
+                <Toggle name="selfConsumptionPriority" label={c.selfConsumption} description={c.selfConsumptionDesc} />
+                <Toggle name="gridExportAllowed" label={c.gridExport} description={c.gridExportDesc} />
               </div>
             </div>
           </div>
@@ -122,13 +129,13 @@ export function ConfigStep({ formData, updateFormData, onNext, onBack }: Props) 
         {/* BESS Configuration */}
         {hasBESS && (
           <div>
-            <h3 className="text-base font-semibold text-neutral-800 mb-4 pb-2 border-b border-neutral-100">🔋 Battery Storage Configuration</h3>
+            <h3 className="text-base font-semibold text-neutral-800 mb-4 pb-2 border-b border-neutral-100">{c.bessSection}</h3>
             <div className="space-y-3">
-              <Toggle name="peakShavingInterest" label="Peak demand shaving" description="Use the battery to reduce peak demand charges on your electricity tariff." />
-              <Toggle name="backupPowerInterest" label="Backup power capability" description="Include backup power as a priority — keeps critical loads running during outages." />
+              <Toggle name="peakShavingInterest" label={c.peakShaving} description={c.peakShavingDesc} />
+              <Toggle name="backupPowerInterest" label={c.backup} description={c.backupDesc} />
               <div>
                 <div className="flex items-center gap-2 mb-1.5">
-                  <label className="text-sm font-medium text-neutral-700">Preferred Backup Duration</label>
+                  <label className="text-sm font-medium text-neutral-700">{c.backupDuration}</label>
                 </div>
                 <div className="flex items-center gap-4">
                   <input
@@ -138,7 +145,7 @@ export function ConfigStep({ formData, updateFormData, onNext, onBack }: Props) 
                   />
                   <div className="w-20 text-center">
                     <span className="text-lg font-bold text-brand-600">{watch('preferredStorageHours')}</span>
-                    <span className="text-neutral-400 text-xs"> hours</span>
+                    <span className="text-neutral-400 text-xs"> {ct.units.hours}</span>
                   </div>
                 </div>
               </div>
@@ -149,27 +156,24 @@ export function ConfigStep({ formData, updateFormData, onNext, onBack }: Props) 
         {/* Heat Pump Configuration */}
         {hasHP && (
           <div>
-            <h3 className="text-base font-semibold text-neutral-800 mb-4 pb-2 border-b border-neutral-100">🌡️ Heat Pump Configuration</h3>
+            <h3 className="text-base font-semibold text-neutral-800 mb-4 pb-2 border-b border-neutral-100">{c.hpSection}</h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-neutral-700 mb-1.5">Current Heating System</label>
+                <label className="block text-sm font-medium text-neutral-700 mb-1.5">{c.heatingSystem}</label>
                 <select
                   {...register('currentHeatingType')}
                   className="w-full px-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white text-neutral-900"
                 >
-                  <option value="gas">Natural Gas Boiler</option>
-                  <option value="oil">Oil Boiler</option>
-                  <option value="electric">Electric Resistance Heating</option>
-                  <option value="district">District Heating</option>
-                  <option value="biomass">Biomass / Wood Pellets</option>
-                  <option value="other">Other</option>
+                  {heatingKeys.map(key => (
+                    <option key={key} value={key}>{c.heatingOptions[key]}</option>
+                  ))}
                 </select>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <div className="flex items-center gap-2 mb-1.5">
-                    <label className="text-sm font-medium text-neutral-700">Annual Heating Cost</label>
-                    <Tooltip text="Your total annual spend on heating fuel (gas, oil, etc.) — from your utility invoices." />
+                    <label className="text-sm font-medium text-neutral-700">{c.heatingCost}</label>
+                    <Tooltip text={c.heatingCostTooltip} />
                   </div>
                   <div className="relative">
                     <input
@@ -177,13 +181,13 @@ export function ConfigStep({ formData, updateFormData, onNext, onBack }: Props) 
                       type="number" placeholder="8000"
                       className="w-full px-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-brand-500 text-neutral-900"
                     />
-                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400 text-sm">EUR/yr</span>
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400 text-sm">EUR{ct.units.perYr}</span>
                   </div>
                 </div>
                 <div>
                   <div className="flex items-center gap-2 mb-1.5">
-                    <label className="text-sm font-medium text-neutral-700">Annual Heating Demand</label>
-                    <Tooltip text="Optional — kWh of heat consumed per year. Leave at 0 and we'll estimate from building size." />
+                    <label className="text-sm font-medium text-neutral-700">{c.heatingDemand}</label>
+                    <Tooltip text={c.heatingDemandTooltip} />
                   </div>
                   <div className="relative">
                     <input
@@ -191,7 +195,7 @@ export function ConfigStep({ formData, updateFormData, onNext, onBack }: Props) 
                       type="number" placeholder="40000"
                       className="w-full px-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-brand-500 text-neutral-900"
                     />
-                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400 text-sm">kWh/yr</span>
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400 text-sm">kWh{ct.units.perYr}</span>
                   </div>
                 </div>
               </div>
@@ -202,10 +206,10 @@ export function ConfigStep({ formData, updateFormData, onNext, onBack }: Props) 
 
       <div className="flex justify-between mt-8">
         <button type="button" onClick={onBack} className="inline-flex items-center gap-2 px-5 py-3 bg-white border border-neutral-200 text-neutral-700 font-semibold rounded-xl hover:bg-neutral-50 transition-all">
-          <ArrowLeft className="w-4 h-4" /> Back
+          <ArrowLeft className="w-4 h-4" /> {ct.wizard.back}
         </button>
         <button type="submit" className="inline-flex items-center gap-2 px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition-all">
-          Continue <ArrowRight className="w-4 h-4" />
+          {ct.wizard.continue} <ArrowRight className="w-4 h-4" />
         </button>
       </div>
     </form>

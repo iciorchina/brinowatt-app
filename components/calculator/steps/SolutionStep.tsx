@@ -2,6 +2,7 @@
 
 import type { FormData, SolutionType } from '@/types'
 import { Sun, Battery, Thermometer, Zap, ArrowRight } from 'lucide-react'
+import { useCalcT } from '@/lib/i18n/calc'
 
 interface Props {
   formData: Partial<FormData>
@@ -10,13 +11,13 @@ interface Props {
   onBack: () => void
 }
 
-const solutions: { id: SolutionType; label: string; sublabel: string; icon: React.ElementType; description: string; popular?: boolean; color: string }[] = [
-  { id: 'pv', label: 'Solar PV', sublabel: 'Photovoltaic System', icon: Sun, color: 'amber', description: 'Generate electricity from sunlight. Best for sites with roof or ground area and daytime consumption.' },
-  { id: 'bess', label: 'Battery Storage', sublabel: 'BESS System', icon: Battery, color: 'blue', description: 'Store energy from solar or grid. Maximise self-consumption and enable backup power.' },
-  { id: 'heatpump', label: 'Heat Pump', sublabel: 'Air-to-Water System', icon: Thermometer, color: 'rose', description: 'Replace fossil fuel heating with efficient electric heat pump technology.' },
-  { id: 'pv_bess', label: 'Solar + Battery', sublabel: 'PV + BESS Combo', icon: Zap, color: 'brand', description: 'The most popular combination. Maximise solar self-consumption and cut grid dependency.', popular: true },
-  { id: 'pv_heatpump', label: 'Solar + Heat Pump', sublabel: 'PV + Heat Pump', icon: Sun, color: 'purple', description: 'Cover both electricity and heating needs from a single clean energy source.' },
-  { id: 'full_hybrid', label: 'Full Hybrid System', sublabel: 'PV + BESS + Heat Pump', icon: Zap, color: 'green', description: 'Maximum energy independence. Combined savings across all energy vectors.' },
+const SOLUTION_META: { id: SolutionType; icon: React.ElementType; popular?: boolean; color: string }[] = [
+  { id: 'pv', icon: Sun, color: 'amber' },
+  { id: 'bess', icon: Battery, color: 'blue' },
+  { id: 'heatpump', icon: Thermometer, color: 'rose' },
+  { id: 'pv_bess', icon: Zap, color: 'brand', popular: true },
+  { id: 'pv_heatpump', icon: Sun, color: 'purple' },
+  { id: 'full_hybrid', icon: Zap, color: 'green' },
 ]
 
 const colorMap: Record<string, { border: string; bg: string; icon: string; iconBg: string; badge: string }> = {
@@ -29,6 +30,8 @@ const colorMap: Record<string, { border: string; bg: string; icon: string; iconB
 }
 
 export function SolutionStep({ formData, updateFormData, onNext }: Props) {
+  const ct = useCalcT()
+  const s = ct.wizard.solution
   const selected = formData.selectedSolution ?? 'pv'
 
   const handleSelect = (id: SolutionType) => {
@@ -38,27 +41,28 @@ export function SolutionStep({ formData, updateFormData, onNext }: Props) {
   return (
     <div>
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-neutral-900 mb-2">What would you like to evaluate?</h2>
-        <p className="text-neutral-500">Select the energy solution or combination you want to analyse. You can model individual technologies or combined systems.</p>
+        <h2 className="text-2xl font-bold text-neutral-900 mb-2">{s.title}</h2>
+        <p className="text-neutral-500">{s.subtitle}</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-        {solutions.map((sol) => {
-          const Icon = sol.icon
-          const c = colorMap[sol.color]
-          const isSelected = selected === sol.id
+        {SOLUTION_META.map((meta) => {
+          const Icon = meta.icon
+          const c = colorMap[meta.color]
+          const text = s.options[meta.id]
+          const isSelected = selected === meta.id
           return (
             <button
-              key={sol.id}
+              key={meta.id}
               type="button"
-              onClick={() => handleSelect(sol.id)}
+              onClick={() => handleSelect(meta.id)}
               className={`relative text-left p-5 rounded-xl border-2 transition-all duration-150 hover:shadow-md
                 ${isSelected ? `${c.border} ${c.bg}` : 'border-neutral-200 bg-white hover:border-neutral-300'}
               `}
             >
-              {sol.popular && (
+              {meta.popular && (
                 <span className="absolute top-3 right-3 px-2 py-0.5 bg-brand-600 text-white text-xs font-semibold rounded-full">
-                  Popular
+                  {s.popular}
                 </span>
               )}
               <div className="flex items-start gap-3">
@@ -66,9 +70,9 @@ export function SolutionStep({ formData, updateFormData, onNext }: Props) {
                   <Icon className={`w-5 h-5 ${isSelected ? c.icon : 'text-neutral-500'}`} />
                 </div>
                 <div>
-                  <div className="font-semibold text-neutral-900 text-sm">{sol.label}</div>
-                  <div className="text-xs text-neutral-500 mb-2">{sol.sublabel}</div>
-                  <div className="text-xs text-neutral-600 leading-relaxed">{sol.description}</div>
+                  <div className="font-semibold text-neutral-900 text-sm">{text.label}</div>
+                  <div className="text-xs text-neutral-500 mb-2">{text.sublabel}</div>
+                  <div className="text-xs text-neutral-600 leading-relaxed">{text.description}</div>
                 </div>
               </div>
               {isSelected && (
@@ -89,7 +93,7 @@ export function SolutionStep({ formData, updateFormData, onNext }: Props) {
           onClick={onNext}
           className="inline-flex items-center gap-2 px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition-all"
         >
-          Continue <ArrowRight className="w-4 h-4" />
+          {ct.wizard.continue} <ArrowRight className="w-4 h-4" />
         </button>
       </div>
     </div>

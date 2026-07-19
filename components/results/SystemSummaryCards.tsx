@@ -1,6 +1,9 @@
+'use client'
+
 import type { PVResults, BESSResults, HeatPumpResults } from '@/types'
 import { Sun, Battery, Thermometer } from 'lucide-react'
 import { formatCurrency, formatKWh, formatKWp, formatPercent, formatYears, formatTonnesCO2, formatNumber } from '@/lib/utils/formatters'
+import { useCalcT } from '@/lib/i18n/calc'
 
 interface Props {
   pvResults?: PVResults
@@ -54,6 +57,9 @@ function SummaryCard({
 }
 
 export function SystemSummaryCards({ pvResults, bessResults, hpResults }: Props) {
+  const ct = useCalcT()
+  const s = ct.results.system
+  const perYr = ct.units.perYr
   const cards = []
 
   if (pvResults) {
@@ -61,20 +67,20 @@ export function SystemSummaryCards({ pvResults, bessResults, hpResults }: Props)
       <SummaryCard
         key="pv"
         icon={Sun}
-        title="Solar PV System"
-        subtitle="Photovoltaic"
+        title={s.pvTitle}
+        subtitle={s.pvSub}
         headerBg="bg-amber-50"
         iconColor="text-amber-600"
         data={[
-          { label: 'System Size', value: formatKWp(pvResults.systemSizeKWp) },
-          { label: 'Annual Production', value: formatKWh(pvResults.annualProductionKWh) },
-          { label: 'Self-Consumption', value: formatPercent(pvResults.selfConsumptionRate) },
-          { label: 'Grid Export', value: formatKWh(pvResults.gridExportKWh) + '/yr' },
-          { label: 'Grid Export Revenue', value: formatCurrency(pvResults.gridExportRevenue) + '/yr' },
-          { label: 'Annual Benefit', value: formatCurrency(pvResults.totalAnnualBenefit) + '/yr' },
-          { label: 'CAPEX Estimate', value: formatCurrency(pvResults.capexEUR) },
-          { label: 'Simple Payback', value: formatYears(pvResults.paybackYears) },
-          { label: 'CO₂ Reduction', value: formatTonnesCO2(pvResults.co2ReductionTonnes) },
+          { label: s.systemSize, value: formatKWp(pvResults.systemSizeKWp) },
+          { label: s.annualProduction, value: formatKWh(pvResults.annualProductionKWh) },
+          { label: s.selfConsumption, value: formatPercent(pvResults.selfConsumptionRate) },
+          { label: s.gridExport, value: formatKWh(pvResults.gridExportKWh) + perYr },
+          { label: s.gridExportRevenue, value: formatCurrency(pvResults.gridExportRevenue) + perYr },
+          { label: s.annualBenefit, value: formatCurrency(pvResults.totalAnnualBenefit) + perYr },
+          { label: s.capex, value: formatCurrency(pvResults.capexEUR) },
+          { label: s.payback, value: formatYears(pvResults.paybackYears, ct.units.years) },
+          { label: s.co2, value: formatTonnesCO2(pvResults.co2ReductionTonnes, ct.units.tCo2) },
         ]}
       />
     )
@@ -85,19 +91,19 @@ export function SystemSummaryCards({ pvResults, bessResults, hpResults }: Props)
       <SummaryCard
         key="bess"
         icon={Battery}
-        title="Battery Storage"
-        subtitle="BESS System"
+        title={s.bessTitle}
+        subtitle={s.bessSub}
         headerBg="bg-blue-50"
         iconColor="text-blue-600"
         data={[
-          { label: 'Storage Capacity', value: `${formatNumber(bessResults.storageSizeKWh, 0)} kWh` },
-          { label: 'Power Rating', value: `${formatNumber(bessResults.powerKW, 0)} kW` },
-          { label: 'Self-Consumption Boost', value: `+${formatPercent(bessResults.selfConsumptionIncrease)}` },
-          { label: 'Additional Self-Use', value: formatKWh(bessResults.additionalSelfConsumptionKWh) + '/yr' },
-          { label: 'Peak Shaving Savings', value: formatCurrency(bessResults.peakShavingSavings) + '/yr' },
-          { label: 'Annual Savings', value: formatCurrency(bessResults.annualSavings) + '/yr' },
-          { label: 'CAPEX Estimate', value: formatCurrency(bessResults.capexEUR) },
-          { label: 'Simple Payback', value: formatYears(bessResults.paybackYears) },
+          { label: s.storageCapacity, value: `${formatNumber(bessResults.storageSizeKWh, 0)} kWh` },
+          { label: s.powerRating, value: `${formatNumber(bessResults.powerKW, 0)} kW` },
+          { label: s.scBoost, value: `+${formatPercent(bessResults.selfConsumptionIncrease)}` },
+          { label: s.additionalSelfUse, value: formatKWh(bessResults.additionalSelfConsumptionKWh) + perYr },
+          { label: s.peakShavingSavings, value: formatCurrency(bessResults.peakShavingSavings) + perYr },
+          { label: s.annualSavings, value: formatCurrency(bessResults.annualSavings) + perYr },
+          { label: s.capex, value: formatCurrency(bessResults.capexEUR) },
+          { label: s.payback, value: formatYears(bessResults.paybackYears, ct.units.years) },
         ]}
       />
     )
@@ -108,20 +114,20 @@ export function SystemSummaryCards({ pvResults, bessResults, hpResults }: Props)
       <SummaryCard
         key="hp"
         icon={Thermometer}
-        title="Heat Pump System"
-        subtitle="Air-to-Water"
+        title={s.hpTitle}
+        subtitle={s.hpSub}
         headerBg="bg-rose-50"
         iconColor="text-rose-600"
         data={[
-          { label: 'System Size', value: `${hpResults.heatPumpSizeKW} kW` },
-          { label: 'COP Efficiency', value: `${hpResults.cop.toFixed(1)}×` },
-          { label: 'HP Electricity Use', value: formatKWh(hpResults.annualHeatPumpElectricityKWh) + '/yr' },
-          { label: 'Current Heating Cost', value: formatCurrency(hpResults.annualCurrentEnergyCost) + '/yr' },
-          { label: 'HP Energy Cost', value: formatCurrency(hpResults.annualHeatPumpEnergyCost) + '/yr' },
-          { label: 'Annual Savings', value: formatCurrency(hpResults.annualSavings) + '/yr' },
-          { label: 'CO₂ Reduction', value: formatTonnesCO2(hpResults.co2ReductionTonnes) },
-          { label: 'CAPEX Estimate', value: formatCurrency(hpResults.capexEUR) },
-          { label: 'Simple Payback', value: formatYears(hpResults.paybackYears) },
+          { label: s.systemSize, value: `${hpResults.heatPumpSizeKW} kW` },
+          { label: s.copEfficiency, value: `${hpResults.cop.toFixed(1)}×` },
+          { label: s.hpElectricityUse, value: formatKWh(hpResults.annualHeatPumpElectricityKWh) + perYr },
+          { label: s.currentHeatingCost, value: formatCurrency(hpResults.annualCurrentEnergyCost) + perYr },
+          { label: s.hpEnergyCost, value: formatCurrency(hpResults.annualHeatPumpEnergyCost) + perYr },
+          { label: s.annualSavings, value: formatCurrency(hpResults.annualSavings) + perYr },
+          { label: s.co2, value: formatTonnesCO2(hpResults.co2ReductionTonnes, ct.units.tCo2) },
+          { label: s.capex, value: formatCurrency(hpResults.capexEUR) },
+          { label: s.payback, value: formatYears(hpResults.paybackYears, ct.units.years) },
         ]}
       />
     )
@@ -131,7 +137,7 @@ export function SystemSummaryCards({ pvResults, bessResults, hpResults }: Props)
 
   return (
     <div>
-      <h3 className="text-lg font-bold text-neutral-900 mb-4">System Details by Technology</h3>
+      <h3 className="text-lg font-bold text-neutral-900 mb-4">{s.title}</h3>
       <div className={`grid grid-cols-1 gap-5 ${cards.length > 1 ? 'md:grid-cols-2' : ''} ${cards.length === 3 ? 'lg:grid-cols-3' : ''}`}>
         {cards}
       </div>

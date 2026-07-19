@@ -1,19 +1,22 @@
 'use client'
+import { useMemo, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { useState, useEffect } from 'react'
 import type { FormData } from '@/types'
 import { ArrowRight, ArrowLeft, HelpCircle, Lightbulb } from 'lucide-react'
 import { getCountryConfig } from '@/lib/config/countries'
+import { useCalcT, tpl } from '@/lib/i18n/calc'
 
-const schema = z.object({
-  annualElectricityConsumption: z.coerce.number().min(1000, 'Min 1,000 kWh').max(100_000_000),
-  monthlyElectricityBill: z.coerce.number().min(10, 'Required'),
-  electricityTariff: z.coerce.number().min(0.01).max(2),
-  operatingHoursPerDay: z.coerce.number().min(1).max(24),
-})
-type FormValues = z.infer<typeof schema>
+function makeSchema(vConsumption: string, requiredMsg: string) {
+  return z.object({
+    annualElectricityConsumption: z.coerce.number().min(1000, vConsumption).max(100_000_000),
+    monthlyElectricityBill: z.coerce.number().min(10, requiredMsg),
+    electricityTariff: z.coerce.number().min(0.01).max(2),
+    operatingHoursPerDay: z.coerce.number().min(1).max(24),
+  })
+}
+type FormValues = z.infer<ReturnType<typeof makeSchema>>
 
 interface Props {
   formData: Partial<FormData>
@@ -23,7 +26,10 @@ interface Props {
 }
 
 export function EnergyStep({ formData, updateFormData, onNext, onBack }: Props) {
+  const ct = useCalcT()
+  const e = ct.wizard.energy
   const countryConfig = getCountryConfig(formData.country ?? 'DE')
+  const schema = useMemo(() => makeSchema(e.vConsumption, ct.wizard.required), [e, ct])
 
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -63,23 +69,24 @@ export function EnergyStep({ formData, updateFormData, onNext, onBack }: Props) 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-neutral-900 mb-2">Your energy profile</h2>
-        <p className="text-neutral-500">This data drives all savings calculations. Use your most recent annual electricity bill for best accuracy.</p>
+        <h2 className="text-2xl font-bold text-neutral-900 mb-2">{e.title}</h2>
+        <p className="text-neutral-500">{e.subtitle}</p>
       </div>
 
       {/* Country default hint */}
       <div className="mb-6 p-4 bg-brand-50 border border-brand-100 rounded-xl flex gap-3">
         <Lightbulb className="w-5 h-5 text-brand-600 flex-shrink-0 mt-0.5" />
         <div className="text-sm text-brand-800">
-          <strong>Using {countryConfig.name} defaults:</strong> Electricity price {countryConfig.electricityPrice} EUR/kWh, solar yield {countryConfig.solarIrradiance} kWh/kWp/year. You can override these below.
+          <strong>{tpl(e.hint, { country: ct.countries[countryConfig.code] ?? countryConfig.name })}</strong>{' '}
+          {tpl(e.hintBody, { price: countryConfig.electricityPrice, yieldValue: countryConfig.solarIrradiance })}
         </div>
       </div>
 
       <div className="space-y-5">
         <div>
           <div className="flex items-center gap-2 mb-1.5">
-            <label className="text-sm font-medium text-neutral-700">Annual Electricity Consumption *</label>
-            <Tooltip text="Found on your annual electricity bill or energy invoice. Typically expressed as kWh/year." />
+            <label className="text-sm font-medium text-neutral-700">{e.consumption} *</label>
+            <Tooltip text={e.consumptionTooltip} />
           </div>
           <div className="relative">
             <input
@@ -87,17 +94,17 @@ export function EnergyStep({ formData, updateFormData, onNext, onBack }: Props) 
               type="number" placeholder="50000"
               className="w-full px-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-brand-500 text-neutral-900 placeholder-neutral-400"
             />
-            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400 text-sm">kWh/year</span>
+            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400 text-sm">{ct.units.kwhYear}</span>
           </div>
           {errors.annualElectricityConsumption && <p className="text-red-500 text-sm mt-1">{errors.annualElectricityConsumption.message}</p>}
-          <p className="text-xs text-neutral-400 mt-1">Typical SME: 20,000–200,000 kWh/year</p>
+          <p className="text-xs text-neutral-400 mt-1">{e.consumptionHint}</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <label className="text-sm font-medium text-neutral-700">Electricity Tariff</label>
-              <Tooltip text="Your price per kWh including all taxes and levies. Check your electricity bill." />
+              <label className="text-sm font-medium text-neutral-700">{e.tariff}</label>
+              <Tooltip text={e.tariffTooltip} />
             </div>
             <div className="relative">
               <input
@@ -112,8 +119,8 @@ export function EnergyStep({ formData, updateFormData, onNext, onBack }: Props) 
 
           <div>
             <div className="flex items-center gap-2 mb-1.5">
-              <label className="text-sm font-medium text-neutral-700">Monthly Electricity Bill</label>
-              <Tooltip text="Auto-calculated from consumption × tariff. Override if you know the exact figure." />
+              <label className="text-sm font-medium text-neutral-700">{e.bill}</label>
+              <Tooltip text={e.billTooltip} />
             </div>
             <div className="relative">
               <input
@@ -121,15 +128,15 @@ export function EnergyStep({ formData, updateFormData, onNext, onBack }: Props) 
                 type="number" placeholder="1000"
                 className="w-full px-4 py-3 rounded-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-brand-500 text-neutral-900 placeholder-neutral-400"
               />
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400 text-sm">EUR/mo</span>
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-400 text-sm">{ct.units.eurMonth}</span>
             </div>
           </div>
         </div>
 
         <div>
           <div className="flex items-center gap-2 mb-1.5">
-            <label className="text-sm font-medium text-neutral-700">Typical Operating Hours per Day</label>
-            <Tooltip text="Average hours per day your facility is operational and consuming electricity." />
+            <label className="text-sm font-medium text-neutral-700">{e.hours}</label>
+            <Tooltip text={e.hoursTooltip} />
           </div>
           <div className="flex items-center gap-4">
             <input
@@ -139,7 +146,7 @@ export function EnergyStep({ formData, updateFormData, onNext, onBack }: Props) 
             />
             <div className="w-16 text-center">
               <span className="text-lg font-bold text-brand-600">{watch('operatingHoursPerDay')}</span>
-              <span className="text-neutral-400 text-xs"> h/day</span>
+              <span className="text-neutral-400 text-xs"> {ct.units.hPerDay}</span>
             </div>
           </div>
         </div>
@@ -147,10 +154,10 @@ export function EnergyStep({ formData, updateFormData, onNext, onBack }: Props) 
 
       <div className="flex justify-between mt-8">
         <button type="button" onClick={onBack} className="inline-flex items-center gap-2 px-5 py-3 bg-white border border-neutral-200 text-neutral-700 font-semibold rounded-xl hover:bg-neutral-50 transition-all">
-          <ArrowLeft className="w-4 h-4" /> Back
+          <ArrowLeft className="w-4 h-4" /> {ct.wizard.back}
         </button>
         <button type="submit" className="inline-flex items-center gap-2 px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white font-semibold rounded-xl transition-all">
-          Continue <ArrowRight className="w-4 h-4" />
+          {ct.wizard.continue} <ArrowRight className="w-4 h-4" />
         </button>
       </div>
     </form>

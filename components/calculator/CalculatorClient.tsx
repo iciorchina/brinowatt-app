@@ -6,6 +6,7 @@ import type { SolutionType, FormData } from '@/types'
 import { calculateResults } from '@/lib/calculations'
 import { saveFormData, loadFormData } from '@/lib/utils/localStorage'
 import { CalculatorLayout } from '@/components/calculator/CalculatorLayout'
+import { useCalcT } from '@/lib/i18n/calc'
 import { SolutionStep } from '@/components/calculator/steps/SolutionStep'
 import { LocationStep } from '@/components/calculator/steps/LocationStep'
 import { EnergyStep } from '@/components/calculator/steps/EnergyStep'
@@ -16,15 +17,6 @@ import { ContactStep } from '@/components/calculator/steps/ContactStep'
 export type CalculatorStep = 'solution' | 'location' | 'energy' | 'config' | 'budget' | 'contact'
 
 const STEPS: CalculatorStep[] = ['solution', 'location', 'energy', 'config', 'budget', 'contact']
-
-const STEP_TITLES: Record<CalculatorStep, string> = {
-  solution: 'Select Solution',
-  location: 'Your Company',
-  energy: 'Energy Profile',
-  config: 'System Details',
-  budget: 'Budget & Financing',
-  contact: 'Get Your Results',
-}
 
 const defaultFormData: Partial<FormData> = {
   selectedSolution: 'pv',
@@ -49,8 +41,10 @@ const defaultFormData: Partial<FormData> = {
 }
 
 export function CalculatorClient() {
+  const ct = useCalcT()
   const searchParams = useSearchParams()
   const router = useRouter()
+  const stepTitles = ct.wizard.stepTitles as Record<CalculatorStep, string>
   const [currentStep, setCurrentStep] = useState<CalculatorStep>('solution')
   const [formData, setFormData] = useState<Partial<FormData>>(defaultFormData)
   const [isCalculating, setIsCalculating] = useState(false)
@@ -124,7 +118,7 @@ export function CalculatorClient() {
     <CalculatorLayout
       currentStep={currentStep}
       steps={STEPS}
-      stepTitles={STEP_TITLES}
+      stepTitles={stepTitles}
       progress={progress}
     >
       {currentStep === 'solution' && <SolutionStep {...stepProps} />}
