@@ -1,20 +1,39 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, TrendingUp, Zap, Leaf, Clock, Download, AlertCircle } from 'lucide-react'
-import type { CombinedResults, FormData } from '@/types'
+import { ArrowLeft, TrendingUp, Zap, Leaf, Clock, Download, AlertCircle, Loader2 } from 'lucide-react'
+import type { CombinedResults, FormData, CalculationResults, Scenario } from '@/types'
 import { formatCurrency, formatYears, formatTonnesCO2 } from '@/lib/utils/formatters'
-import { useCalcT } from '@/lib/i18n/calc'
+import { useCalcT, useLangCode } from '@/lib/i18n/calc'
 
 interface Props {
   results: CombinedResults
   formData: Partial<FormData>
   solutionLabel: string
+  fullResults: CalculationResults
+  activeScenario: Scenario
 }
 
-export function ResultsHeader({ results, formData, solutionLabel }: Props) {
+export function ResultsHeader({ results, formData, solutionLabel, fullResults, activeScenario }: Props) {
   const ct = useCalcT()
+  const lang = useLangCode()
+  const [downloading, setDownloading] = useState(false)
   const h = ct.results.header
+
+  const handleDownload = async () => {
+    if (downloading) return
+    setDownloading(true)
+    try {
+      const { generateResultsPdf } = await import('@/lib/pdf/generateResultsPdf')
+      const bytes = await generateResultsPdf(fullResults, activeScenario, ct, lang)
+      console.log(`[pdf] generated ${bytes} bytes`)
+    } catch (err) {
+      console.error('[pdf] generation failed:', err)
+    } finally {
+      setDownloading(false)
+    }
+  }
 
   const kpis = [
     { icon: TrendingUp, label: h.totalInvestment, value: formatCurrency(results.totalCapexEUR), color: 'text-blue-600', bg: 'bg-blue-50' },
@@ -40,12 +59,12 @@ export function ResultsHeader({ results, formData, solutionLabel }: Props) {
               {h.indicative}
             </div>
             <button
-              disabled
-              title={h.pdfTooltip}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-neutral-100 text-neutral-400 text-sm rounded-lg cursor-not-allowed"
+              onClick={handleDownload}
+              disabled={downloading}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-neutral-900 hover:bg-neutral-700 disabled:bg-neutral-400 text-white text-sm font-medium rounded-lg transition-colors"
             >
-              <Download className="w-4 h-4" /> {h.downloadPdf}
-              <span className="text-xs bg-neutral-200 text-neutral-500 px-1.5 py-0.5 rounded">{h.soon}</span>
+              {downloading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+              {h.downloadPdf}
             </button>
           </div>
         </div>

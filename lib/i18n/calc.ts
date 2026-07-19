@@ -223,6 +223,15 @@ const en = {
     backHome: 'Back to Home', runAnother: 'Run Another Calculation',
     questions: 'Questions? Email us at',
   },
+  pdf: {
+    date: 'Date',
+    page: 'Page',
+    scenarioComparison: 'Scenario comparison',
+    metric: 'Metric',
+    contactTitle: 'Your energy partner',
+    generatedBy: 'Report generated with the Brinowatt calculator · brinowatt-app.vercel.app',
+    fileName: 'Brinoko-Energy-Analysis',
+  },
 }
 
 export type CalcDictionary = typeof en
@@ -431,6 +440,15 @@ const ro: CalcDictionary = {
     backHome: 'Înapoi la pagina principală', runAnother: 'Rulează alt calcul',
     questions: 'Întrebări? Scrie-ne la',
   },
+  pdf: {
+    date: 'Data',
+    page: 'Pagina',
+    scenarioComparison: 'Comparație scenarii',
+    metric: 'Indicator',
+    contactTitle: 'Partenerul tău în energie',
+    generatedBy: 'Raport generat cu calculatorul Brinowatt · brinowatt-app.vercel.app',
+    fileName: 'Brinoko-Analiza-Energetica',
+  },
 }
 
 const it: CalcDictionary = {
@@ -636,6 +654,15 @@ const it: CalcDictionary = {
     ],
     backHome: 'Torna alla home', runAnother: 'Esegui un altro calcolo',
     questions: 'Domande? Scrivici a',
+  },
+  pdf: {
+    date: 'Data',
+    page: 'Pagina',
+    scenarioComparison: 'Confronto scenari',
+    metric: 'Indicatore',
+    contactTitle: 'Il tuo partner per l\'energia',
+    generatedBy: 'Report generato con il calcolatore Brinowatt · brinowatt-app.vercel.app',
+    fileName: 'Brinoko-Analisi-Energetica',
   },
 }
 
@@ -843,6 +870,15 @@ const de: CalcDictionary = {
     backHome: 'Zur Startseite', runAnother: 'Weitere Berechnung starten',
     questions: 'Fragen? Schreiben Sie uns an',
   },
+  pdf: {
+    date: 'Datum',
+    page: 'Seite',
+    scenarioComparison: 'Szenarienvergleich',
+    metric: 'Kennzahl',
+    contactTitle: 'Ihr Energiepartner',
+    generatedBy: 'Bericht erstellt mit dem Brinowatt-Rechner · brinowatt-app.vercel.app',
+    fileName: 'Brinoko-Energieanalyse',
+  },
 }
 
 const calcDictionaries: Record<Lang, CalcDictionary> = { en, ro, it, de }
@@ -850,4 +886,9 @@ const calcDictionaries: Record<Lang, CalcDictionary> = { en, ro, it, de }
 export function useCalcT(): CalcDictionary {
   const { lang } = useLang()
   return calcDictionaries[lang]
+}
+
+export function useLangCode(): Lang {
+  const { lang } = useLang()
+  return lang
 }
