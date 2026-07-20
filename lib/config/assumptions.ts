@@ -20,7 +20,7 @@ export const ASSUMPTIONS: AssumptionsConfig = {
 
   // ── Battery Energy Storage ───────────────────────────────────────────────
   bessLifespanYears: 12,
-  bessDefaultCostPerKWh: 200,           // EUR/kWh installed (client-set price)
+  bessDefaultCostPerKWh: 300,           // EUR/kWh installed (client-set price)
   bessRoundTripEfficiencyPercent: 93,
   bessDepthOfDischargePct: 90,
   bessCyclesPerYear: 300,
