@@ -11,13 +11,13 @@ interface Props {
   onBack: () => void
 }
 
-const SOLUTION_META: { id: SolutionType; icon: React.ElementType; popular?: boolean; color: string }[] = [
+const SOLUTION_META: { id: SolutionType; icon: React.ElementType; popular?: boolean; recommended?: boolean; color: string }[] = [
   { id: 'pv', icon: Sun, color: 'amber' },
   { id: 'bess', icon: Battery, color: 'blue' },
   { id: 'heatpump', icon: Thermometer, color: 'rose' },
   { id: 'pv_bess', icon: Zap, color: 'brand', popular: true },
   { id: 'pv_heatpump', icon: Sun, color: 'purple' },
-  { id: 'full_hybrid', icon: Zap, color: 'green' },
+  { id: 'full_hybrid', icon: Zap, color: 'green', recommended: true },
 ]
 
 const colorMap: Record<string, { border: string; bg: string; icon: string; iconBg: string; badge: string }> = {
@@ -32,7 +32,7 @@ const colorMap: Record<string, { border: string; bg: string; icon: string; iconB
 export function SolutionStep({ formData, updateFormData, onNext }: Props) {
   const ct = useCalcT()
   const s = ct.wizard.solution
-  const selected = formData.selectedSolution ?? 'pv'
+  const selected = formData.selectedSolution ?? 'full_hybrid'
 
   const handleSelect = (id: SolutionType) => {
     updateFormData({ selectedSolution: id })
@@ -63,6 +63,11 @@ export function SolutionStep({ formData, updateFormData, onNext }: Props) {
               {meta.popular && (
                 <span className="absolute top-3 right-3 px-2 py-0.5 bg-brand-600 text-white text-xs font-semibold rounded-full">
                   {s.popular}
+                </span>
+              )}
+              {meta.recommended && (
+                <span className="absolute top-3 right-3 px-2 py-0.5 bg-green-700 text-white text-xs font-semibold rounded-full">
+                  ★ {s.recommended}
                 </span>
               )}
               <div className="flex items-start gap-3">

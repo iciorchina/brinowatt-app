@@ -36,6 +36,7 @@ const en = {
       title: 'What would you like to evaluate?',
       subtitle: 'Select the energy solution or combination you want to analyse. You can model individual technologies or combined systems.',
       popular: 'Popular',
+      recommended: 'Recommended',
       options: {
         pv: { label: 'Solar PV', sublabel: 'Photovoltaic System', description: 'Generate electricity from sunlight. Best for sites with roof or ground area and daytime consumption.' },
         bess: { label: 'Battery Storage', sublabel: 'BESS System', description: 'Store energy from solar or grid. Maximise self-consumption and enable backup power.' },
@@ -127,6 +128,12 @@ const en = {
     noResultsBody: "It looks like your calculation results weren't saved. Please run the calculator again.",
     startCalculator: 'Start Calculator',
     solutionLabels: { pv: 'Solar PV System', bess: 'Battery Storage System', heatpump: 'Heat Pump System', pv_bess: 'Solar PV + Battery Storage', pv_heatpump: 'Solar PV + Heat Pump', full_hybrid: 'Full Hybrid Energy System' },
+    hybridUpsell: {
+      badge: 'Worth a look',
+      title: 'The full hybrid does more with the same site',
+      body: 'Based on your data, solar + battery + heat pump together would save about {amount}/yr — {extra} more per year than your current selection.',
+      cta: 'See the full hybrid figures',
+    },
     disclaimerFooter: '⚠ These estimates are indicative and based on publicly available data and standard assumptions. Actual results will vary based on site-specific conditions, equipment specifications, local regulations, and market prices. A detailed site assessment is required for precise calculations.',
     header: {
       recalculate: 'Recalculate', indicative: 'Indicative estimates',
@@ -254,6 +261,7 @@ const ro: CalcDictionary = {
       title: 'Ce ai vrea să evaluezi?',
       subtitle: 'Alege soluția energetică sau combinația pe care vrei să o analizezi. Poți modela tehnologii individuale sau sisteme combinate.',
       popular: 'Popular',
+      recommended: 'Recomandat',
       options: {
         pv: { label: 'Fotovoltaice', sublabel: 'Sistem fotovoltaic', description: 'Produce electricitate din energia soarelui. Ideal pentru locații cu acoperiș sau teren disponibil și consum pe timp de zi.' },
         bess: { label: 'Baterie de stocare', sublabel: 'Sistem BESS', description: 'Stochează energia din solar sau din rețea. Maximizează autoconsumul și asigură alimentare de rezervă.' },
@@ -345,6 +353,12 @@ const ro: CalcDictionary = {
     noResultsBody: 'Se pare că rezultatele calculului nu au fost salvate. Te rugăm să rulezi calculatorul din nou.',
     startCalculator: 'Pornește calculatorul',
     solutionLabels: { pv: 'Sistem fotovoltaic', bess: 'Sistem de stocare cu baterii', heatpump: 'Sistem cu pompă de căldură', pv_bess: 'Fotovoltaice + Baterie', pv_heatpump: 'Fotovoltaice + Pompă de căldură', full_hybrid: 'Sistem energetic hibrid complet' },
+    hybridUpsell: {
+      badge: 'Merită văzut',
+      title: 'Hibridul complet scoate mai mult din aceeași locație',
+      body: 'Pe baza datelor tale, fotovoltaice + baterie + pompă de căldură ar economisi împreună circa {amount}/an — cu {extra} mai mult pe an decât selecția ta actuală.',
+      cta: 'Vezi cifrele pentru hibridul complet',
+    },
     disclaimerFooter: '⚠ Aceste estimări sunt orientative și se bazează pe date publice și ipoteze standard. Rezultatele reale variază în funcție de condițiile locației, specificațiile echipamentelor, reglementările locale și prețurile pieței. Pentru calcule precise este necesară o evaluare detaliată la fața locului.',
     header: {
       recalculate: 'Recalculează', indicative: 'Estimări orientative',
@@ -470,6 +484,7 @@ const it: CalcDictionary = {
       title: 'Cosa vorresti valutare?',
       subtitle: 'Scegli la soluzione energetica o la combinazione da analizzare. Puoi modellare tecnologie singole o sistemi combinati.',
       popular: 'Più scelto',
+      recommended: 'Consigliato',
       options: {
         pv: { label: 'Fotovoltaico', sublabel: 'Impianto fotovoltaico', description: 'Produci elettricità dal sole. Ideale per siti con tetto o terreno disponibile e consumi diurni.' },
         bess: { label: 'Accumulo a batteria', sublabel: 'Sistema BESS', description: "Immagazzina energia dal solare o dalla rete. Massimizza l'autoconsumo e garantisci l'alimentazione di riserva." },
@@ -561,6 +576,12 @@ const it: CalcDictionary = {
     noResultsBody: 'Sembra che i risultati del calcolo non siano stati salvati. Esegui di nuovo il calcolatore.',
     startCalculator: 'Avvia il calcolatore',
     solutionLabels: { pv: 'Impianto fotovoltaico', bess: 'Sistema di accumulo a batteria', heatpump: 'Sistema a pompa di calore', pv_bess: 'Fotovoltaico + Accumulo', pv_heatpump: 'Fotovoltaico + Pompa di calore', full_hybrid: 'Sistema energetico ibrido completo' },
+    hybridUpsell: {
+      badge: 'Vale la pena',
+      title: "L'ibrido completo rende di più con lo stesso sito",
+      body: 'In base ai tuoi dati, fotovoltaico + batteria + pompa di calore insieme farebbero risparmiare circa {amount}/anno — {extra} in più all\'anno rispetto alla tua selezione attuale.',
+      cta: "Vedi i numeri dell'ibrido completo",
+    },
     disclaimerFooter: '⚠ Queste stime sono indicative e si basano su dati pubblici e ipotesi standard. I risultati reali variano in base alle condizioni del sito, alle specifiche delle apparecchiature, alle normative locali e ai prezzi di mercato. Per calcoli precisi è necessaria una valutazione dettagliata in loco.',
     header: {
       recalculate: 'Ricalcola', indicative: 'Stime indicative',
@@ -686,6 +707,7 @@ const de: CalcDictionary = {
       title: 'Was möchten Sie bewerten?',
       subtitle: 'Wählen Sie die Energielösung oder Kombination, die Sie analysieren möchten. Sie können einzelne Technologien oder kombinierte Systeme modellieren.',
       popular: 'Beliebt',
+      recommended: 'Empfohlen',
       options: {
         pv: { label: 'Photovoltaik', sublabel: 'PV-Anlage', description: 'Strom aus Sonnenlicht erzeugen. Ideal für Standorte mit Dach- oder Freifläche und Tagesverbrauch.' },
         bess: { label: 'Batteriespeicher', sublabel: 'BESS-System', description: 'Energie aus Solar oder Netz speichern. Eigenverbrauch maximieren und Notstrom ermöglichen.' },
@@ -777,6 +799,12 @@ const de: CalcDictionary = {
     noResultsBody: 'Ihre Berechnungsergebnisse wurden offenbar nicht gespeichert. Bitte führen Sie den Rechner erneut aus.',
     startCalculator: 'Rechner starten',
     solutionLabels: { pv: 'PV-Anlage', bess: 'Batteriespeichersystem', heatpump: 'Wärmepumpensystem', pv_bess: 'Photovoltaik + Batteriespeicher', pv_heatpump: 'Photovoltaik + Wärmepumpe', full_hybrid: 'Voll-Hybrid-Energiesystem' },
+    hybridUpsell: {
+      badge: 'Einen Blick wert',
+      title: 'Das Voll-Hybrid-System holt mehr aus demselben Standort',
+      body: 'Auf Basis Ihrer Daten würden PV + Speicher + Wärmepumpe zusammen rund {amount}/Jahr einsparen — {extra} mehr pro Jahr als Ihre aktuelle Auswahl.',
+      cta: 'Voll-Hybrid-Zahlen ansehen',
+    },
     disclaimerFooter: '⚠ Diese Schätzungen sind indikativ und basieren auf öffentlich verfügbaren Daten und Standardannahmen. Tatsächliche Ergebnisse variieren je nach Standortbedingungen, Anlagenspezifikation, lokaler Regulierung und Marktpreisen. Für präzise Berechnungen ist eine detaillierte Vor-Ort-Bewertung erforderlich.',
     header: {
       recalculate: 'Neu berechnen', indicative: 'Indikative Schätzungen',

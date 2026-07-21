@@ -11,6 +11,7 @@ import { KPICards } from './KPICards'
 import { SystemSummaryCards } from './SystemSummaryCards'
 import { ROITimeline } from './ROITimeline'
 import { LeadCapturePanel } from './LeadCapturePanel'
+import { HybridUpsell } from './HybridUpsell'
 import { useCalcT } from '@/lib/i18n/calc'
 
 export function ResultsDashboard() {
@@ -137,6 +138,12 @@ export function ResultsDashboard() {
           pvResults={fullResults.pv}
           bessResults={fullResults.bess}
           hpResults={fullResults.heatPump}
+        />
+
+        {/* Full-hybrid comparison (hidden when already viewing the hybrid) */}
+        <HybridUpsell
+          formData={fullResults.formData}
+          currentStandardSavings={fullResults.scenarios.standard.totalAnnualSavings}
         />
 
         {/* Lead capture CTA */}

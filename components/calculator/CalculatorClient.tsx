@@ -19,7 +19,7 @@ export type CalculatorStep = 'solution' | 'location' | 'energy' | 'config' | 'bu
 const STEPS: CalculatorStep[] = ['solution', 'location', 'energy', 'config', 'budget', 'contact']
 
 const defaultFormData: Partial<FormData> = {
-  selectedSolution: 'pv',
+  selectedSolution: 'full_hybrid',
   country: 'DE',
   electricityTariff: 0.28,
   operatingHoursPerDay: 10,
