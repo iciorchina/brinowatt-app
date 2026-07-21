@@ -2,9 +2,11 @@ import type { FormData, HeatPumpResults, HeatingType } from '@/types'
 import { ASSUMPTIONS } from '@/lib/config/assumptions'
 import { getCountryConfig } from '@/lib/config/countries'
 
-const HEATING_COST_PER_KWH: Record<HeatingType, number> = {
-  gas: 0.085,
-  oil: 0.092,
+// Fallback prices for fuels without per-country data. Gas and oil use the
+// country config; electric resistance uses the user's own electricity tariff.
+const FALLBACK_FUEL_PRICE: Record<HeatingType, number> = {
+  gas: 0.10,
+  oil: 0.105,
   electric: 0.25,
   district: 0.07,
   biomass: 0.045,
@@ -20,13 +22,21 @@ const HEATING_CO2_FACTOR: Record<HeatingType, number> = {
   other: 0.20,
 }
 
-export function calculateHeatPump(formData: Partial<FormData>): HeatPumpResults {
+export interface HpSynergyInput {
+  /** Annual PV surplus (grid export) available to feed the heat pump, kWh */
+  pvExportKWh: number
+}
+
+export function calculateHeatPump(
+  formData: Partial<FormData>,
+  synergy?: HpSynergyInput
+): HeatPumpResults {
   const country = getCountryConfig(formData.country ?? 'OTHER')
   const A = ASSUMPTIONS
 
-  const buildingSize = formData.buildingSize ?? 500
+  const buildingSize = Number(formData.buildingSize) || 500
   const heatingType: HeatingType = formData.currentHeatingType ?? 'gas'
-  const electricityTariff = formData.electricityTariff ?? country.electricityPrice
+  const electricityTariff = Number(formData.electricityTariff) || country.electricityPrice
 
   const heatLoadW = buildingSize * A.hpSizingWperM2
   const heatPumpSizeKW = Math.max(5, Math.ceil(heatLoadW / 1000))
@@ -37,18 +47,44 @@ export function calculateHeatPump(formData: Partial<FormData>): HeatPumpResults 
   const annualHeatingDemand =
     Number(formData.annualHeatingDemand) || buildingSize * 80
 
-  const heatingCostPerKWh = HEATING_COST_PER_KWH[heatingType]
+  const fuelPrice =
+    heatingType === 'gas' ? country.gasPricePerKWh
+    : heatingType === 'oil' ? country.oilPricePerKWh
+    : heatingType === 'electric' ? electricityTariff
+    : FALLBACK_FUEL_PRICE[heatingType]
+
   const annualCurrentEnergyCost =
-    Number(formData.annualHeatingCost) || annualHeatingDemand * heatingCostPerKWh
+    Number(formData.annualHeatingCost) || annualHeatingDemand * fuelPrice
 
   const cop = A.hpCOPDefault
   const annualHeatPumpElectricityKWh = annualHeatingDemand / cop
   const annualHeatPumpEnergyCost = annualHeatPumpElectricityKWh * electricityTariff
 
-  const annualSavings = annualCurrentEnergyCost - annualHeatPumpEnergyCost
+  // ── PV synergy ─────────────────────────────────────────────────────────
+  // A share of the HP's electricity can be covered by surplus PV that would
+  // otherwise be exported. The share is capped by seasonal mismatch (winter
+  // heating vs. summer surplus) and by the surplus actually available.
+  // Accounting: that energy would have earned only the feed-in tariff as
+  // export, so the net system benefit is (tariff − feed-in) per kWh — the PV
+  // side keeps its export revenue as computed, so nothing is double-counted.
+  const coverageShare = A.hpSolarCoverageSharePercent / 100
+  const solarCoveredKWh = synergy
+    ? Math.round(Math.min(
+        annualHeatPumpElectricityKWh * coverageShare,
+        Math.max(0, synergy.pvExportKWh)
+      ))
+    : 0
+  const solarSynergySavings = Math.round(
+    solarCoveredKWh * Math.max(0, electricityTariff - country.feedInTariff)
+  )
 
+  const annualSavings =
+    annualCurrentEnergyCost - annualHeatPumpEnergyCost + solarSynergySavings
+
+  // Solar-covered consumption carries no grid CO2
   const currentCO2Tonnes = (annualHeatingDemand * HEATING_CO2_FACTOR[heatingType]) / 1000
-  const hpCO2Tonnes = (annualHeatPumpElectricityKWh * country.co2GridFactor) / 1000
+  const hpCO2Tonnes =
+    ((annualHeatPumpElectricityKWh - solarCoveredKWh) * country.co2GridFactor) / 1000
   const co2ReductionTonnes = Math.max(0, currentCO2Tonnes - hpCO2Tonnes)
 
   const capexEUR = heatPumpSizeKW * country.heatPumpCostPerKW
@@ -62,6 +98,8 @@ export function calculateHeatPump(formData: Partial<FormData>): HeatPumpResults 
     annualHeatPumpElectricityKWh: Math.round(annualHeatPumpElectricityKWh),
     annualCurrentEnergyCost: Math.round(annualCurrentEnergyCost),
     annualHeatPumpEnergyCost: Math.round(annualHeatPumpEnergyCost),
+    solarCoveredKWh,
+    solarSynergySavings,
     annualSavings: Math.round(annualSavings),
     co2ReductionTonnes: Math.round(co2ReductionTonnes * 10) / 10,
     capexEUR: Math.round(capexEUR),

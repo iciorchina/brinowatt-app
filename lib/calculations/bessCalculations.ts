@@ -6,13 +6,13 @@ import { getCountryConfig } from '@/lib/config/countries'
  * Calculates BESS system sizing, self-consumption boost, savings, and financials.
  * All monetary values in EUR.
  *
- * @param formData              Partial form data from the calculator wizard
- * @param pvAnnualProductionKWh Optional: annual PV production kWh — when provided,
- *                              battery is sized to capture surplus PV generation.
+ * @param formData    Partial form data from the calculator wizard
+ * @param pvExportKWh Optional: annual PV surplus (grid export) actually available
+ *                    to the battery — already net of any heat-pump synergy draw.
  */
 export function calculateBESS(
   formData: Partial<FormData>,
-  pvAnnualProductionKWh?: number
+  pvExportKWh?: number
 ): BESSResults {
   const country = getCountryConfig(formData.country ?? 'OTHER')
   const A = ASSUMPTIONS
@@ -23,11 +23,9 @@ export function calculateBESS(
   // ── System Sizing ──────────────────────────────────────────────────────────
   let storageSizeKWh: number
 
-  if (pvAnnualProductionKWh && pvAnnualProductionKWh > 0) {
-    // When paired with PV: size battery to capture daily PV surplus
-    const pvSelfConsumptionRate = A.pvSelfConsumptionBasePercent / 100
-    const dailyPVProduction = pvAnnualProductionKWh / 365
-    const dailySurplus = dailyPVProduction * (1 - pvSelfConsumptionRate)
+  if (pvExportKWh && pvExportKWh > 0) {
+    // When paired with PV: size battery to capture the available daily surplus
+    const dailySurplus = pvExportKWh / 365
     // Size at 1.5× the average daily surplus — gives buffer for cloudy-day variation
     storageSizeKWh = Math.max(dailySurplus * 1.5, 5)
   } else {
@@ -49,13 +47,11 @@ export function calculateBESS(
 
   let additionalSelfConsumptionKWh: number
 
-  if (pvAnnualProductionKWh && pvAnnualProductionKWh > 0) {
-    // PV surplus that was previously exported can now be captured by battery
-    const pvSelfConsumptionRate = A.pvSelfConsumptionBasePercent / 100
-    const annualGridExport = pvAnnualProductionKWh * (1 - pvSelfConsumptionRate)
+  if (pvExportKWh && pvExportKWh > 0) {
+    // PV surplus that would be exported can instead be captured by the battery
     const maxAnnualCapture = usablePerCycle * A.bessCyclesPerYear
-    // Battery captures up to 85% of export (timing mismatch / losses)
-    additionalSelfConsumptionKWh = Math.min(annualGridExport * 0.85, maxAnnualCapture)
+    // Battery captures up to 85% of the available surplus (timing mismatch / losses)
+    additionalSelfConsumptionKWh = Math.min(pvExportKWh * 0.85, maxAnnualCapture)
   } else {
     // Standalone: time-of-use arbitrage — shifts ~30% of load to off-peak charging
     const shiftableLoad = dailyConsumption * 0.30

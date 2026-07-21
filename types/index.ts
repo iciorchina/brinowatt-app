@@ -103,8 +103,10 @@ export interface HeatPumpResults {
   cop: number
   annualHeatPumpElectricityKWh: number
   annualCurrentEnergyCost: number // EUR
-  annualHeatPumpEnergyCost: number // EUR
-  annualSavings: number // EUR
+  annualHeatPumpEnergyCost: number // EUR (at full grid tariff, before solar synergy)
+  solarCoveredKWh: number // HP electricity covered by surplus PV (0 without PV)
+  solarSynergySavings: number // EUR/yr net benefit of solar-covered HP consumption
+  annualSavings: number // EUR (includes solar synergy)
   co2ReductionTonnes: number
   capexEUR: number
   paybackYears: number
@@ -237,6 +239,7 @@ export interface AssumptionsConfig {
   hpCO2FactorGas: number // kg CO2/kWh
   hpCO2FactorOil: number // kg CO2/kWh
   hpCO2FactorElectric: number // kg CO2/kWh
+  hpSolarCoverageSharePercent: number // share of HP electricity coverable by surplus PV
 
   // Economics
   discountRatePercent: number // for NPV

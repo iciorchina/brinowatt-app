@@ -189,6 +189,7 @@ const en = {
       additionalSelfUse: 'Additional Self-Use', peakShavingSavings: 'Peak Shaving Savings', annualSavings: 'Annual Savings',
       copEfficiency: 'COP Efficiency', hpElectricityUse: 'HP Electricity Use',
       currentHeatingCost: 'Current Heating Cost', hpEnergyCost: 'HP Energy Cost',
+      solarCovered: 'Covered by your solar',
     },
     lead: {
       badge: 'Free tailored offer',
@@ -406,6 +407,7 @@ const ro: CalcDictionary = {
       additionalSelfUse: 'Consum propriu suplimentar', peakShavingSavings: 'Economii din reducerea vârfurilor', annualSavings: 'Economii anuale',
       copEfficiency: 'Eficiență COP', hpElectricityUse: 'Consum electric pompă',
       currentHeatingCost: 'Cost actual încălzire', hpEnergyCost: 'Cost energie pompă',
+      solarCovered: 'Acoperit de solarul tău',
     },
     lead: {
       badge: 'Ofertă personalizată gratuită',
@@ -621,6 +623,7 @@ const it: CalcDictionary = {
       additionalSelfUse: 'Uso proprio aggiuntivo', peakShavingSavings: 'Risparmio da riduzione picchi', annualSavings: 'Risparmio annuo',
       copEfficiency: 'Efficienza COP', hpElectricityUse: 'Consumo elettrico PdC',
       currentHeatingCost: 'Costo attuale riscaldamento', hpEnergyCost: 'Costo energia PdC',
+      solarCovered: 'Coperto dal tuo solare',
     },
     lead: {
       badge: 'Offerta su misura gratuita',
@@ -836,6 +839,7 @@ const de: CalcDictionary = {
       additionalSelfUse: 'Zusätzlicher Eigenverbrauch', peakShavingSavings: 'Einsparung durch Lastspitzenkappung', annualSavings: 'Jährliche Einsparungen',
       copEfficiency: 'COP-Effizienz', hpElectricityUse: 'WP-Stromverbrauch',
       currentHeatingCost: 'Aktuelle Heizkosten', hpEnergyCost: 'WP-Energiekosten',
+      solarCovered: 'Durch Ihre PV gedeckt',
     },
     lead: {
       badge: 'Kostenloses maßgeschneidertes Angebot',

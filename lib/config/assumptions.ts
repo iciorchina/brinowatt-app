@@ -34,6 +34,7 @@ export const ASSUMPTIONS: AssumptionsConfig = {
   hpCO2FactorGas: 0.202,               // kg CO2/kWh natural gas (EU avg)
   hpCO2FactorOil: 0.267,               // kg CO2/kWh heating oil
   hpCO2FactorElectric: 0.0,            // replaced by grid factor
+  hpSolarCoverageSharePercent: 30,     // seasonal mismatch cap: winter heating vs summer surplus
 
   // ── Economics ────────────────────────────────────────────────────────────
   discountRatePercent: 5,               // WACC assumption for NPV

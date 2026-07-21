@@ -252,6 +252,9 @@ export async function generateResultsPdf(
         [s.systemSize, `${h.heatPumpSizeKW} kW`],
         [s.copEfficiency, `${h.cop.toFixed(1)}×`],
         [s.hpElectricityUse, formatKWh(h.annualHeatPumpElectricityKWh) + perYr],
+        ...(h.solarCoveredKWh > 0
+          ? [[s.solarCovered, formatKWh(h.solarCoveredKWh) + perYr] as [string, string]]
+          : []),
         [s.currentHeatingCost, formatCurrency(h.annualCurrentEnergyCost) + perYr],
         [s.hpEnergyCost, formatCurrency(h.annualHeatPumpEnergyCost) + perYr],
         [s.annualSavings, formatCurrency(h.annualSavings) + perYr],

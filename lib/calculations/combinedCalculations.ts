@@ -7,43 +7,55 @@ import { calculatePV } from './pvCalculations'
 import { calculateBESS } from './bessCalculations'
 import { calculateHeatPump } from './heatPumpCalculations'
 
-export function calculateResults(
+/**
+ * Computes all technology results for one scenario with consistent synergy
+ * ordering: PV first, then the heat pump draws on PV surplus (solar-covered
+ * consumption), then the battery sizes against the remaining surplus.
+ */
+function computeTech(
   formData: Partial<FormData>,
-  scenario: Scenario = 'standard'
-): CalculationResults {
+  scenario: Scenario
+): { pv?: PVResults; bess?: BESSResults; hp?: HeatPumpResults } {
   const solution = formData.selectedSolution ?? 'pv'
-  const A = ASSUMPTIONS
-  const mult = A.scenarioMultipliers[scenario]
+  const mult = ASSUMPTIONS.scenarioMultipliers[scenario]
 
   const hasPV = ['pv', 'pv_bess', 'pv_heatpump', 'full_hybrid'].includes(solution)
   const hasBESS = ['bess', 'pv_bess', 'full_hybrid'].includes(solution)
   const hasHP = ['heatpump', 'pv_heatpump', 'full_hybrid'].includes(solution)
 
-  let pvResults: PVResults | undefined
-  let bessResults: BESSResults | undefined
-  let hpResults: HeatPumpResults | undefined
+  const pv = hasPV ? calculatePV(formData, hasBESS) : undefined
+  const pvExportKWh = pv?.gridExportKWh ?? 0
 
-  if (hasPV) {
-    pvResults = calculatePV(formData, hasBESS)
-    applyMultiplier(pvResults, mult)
-  }
-  if (hasBESS) {
-    bessResults = calculateBESS(formData, pvResults?.annualProductionKWh)
-    applyMultiplier(bessResults, mult)
-  }
-  if (hasHP) {
-    hpResults = calculateHeatPump(formData)
-    applyMultiplier(hpResults, mult)
-  }
+  const hp = hasHP
+    ? calculateHeatPump(formData, pv ? { pvExportKWh } : undefined)
+    : undefined
 
-  const combined = buildCombined(pvResults, bessResults, hpResults, formData)
-  const scenarios = buildScenarios(formData, hasPV, hasBESS, hasHP)
+  // Surplus remaining for the battery after the heat pump's solar draw
+  const exportForBess = Math.max(0, pvExportKWh - (hp?.solarCoveredKWh ?? 0))
+  const bess = hasBESS
+    ? calculateBESS(formData, pv ? exportForBess : undefined)
+    : undefined
+
+  if (pv) applyMultiplier(pv, mult)
+  if (bess) applyMultiplier(bess, mult)
+  if (hp) applyMultiplier(hp, mult)
+  return { pv, bess, hp }
+}
+
+export function calculateResults(
+  formData: Partial<FormData>,
+  scenario: Scenario = 'standard'
+): CalculationResults {
+  const { pv, bess, hp } = computeTech(formData, scenario)
+
+  const combined = buildCombined(pv, bess, hp, formData)
+  const scenarios = buildScenarios(formData)
 
   return {
     scenario,
-    pv: pvResults,
-    bess: bessResults,
-    heatPump: hpResults,
+    pv,
+    bess,
+    heatPump: hp,
     combined,
     scenarios,
     formData,
@@ -127,18 +139,9 @@ function buildCombined(
   }
 }
 
-function buildScenarios(
-  formData: Partial<FormData>,
-  hasPV: boolean, hasBESS: boolean, hasHP: boolean
-): ScenarioResults {
+function buildScenarios(formData: Partial<FormData>): ScenarioResults {
   const buildScenario = (scenario: Scenario): CombinedResults => {
-    const mult = ASSUMPTIONS.scenarioMultipliers[scenario]
-    let pv = hasPV ? calculatePV(formData, hasBESS) : undefined
-    let bess = hasBESS ? calculateBESS(formData, pv?.annualProductionKWh) : undefined
-    let hp = hasHP ? calculateHeatPump(formData) : undefined
-    if (pv) applyMultiplier(pv, mult)
-    if (bess) applyMultiplier(bess, mult)
-    if (hp) applyMultiplier(hp, mult)
+    const { pv, bess, hp } = computeTech(formData, scenario)
     return buildCombined(pv, bess, hp, formData)
   }
   return {

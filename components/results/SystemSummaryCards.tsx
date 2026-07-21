@@ -122,6 +122,9 @@ export function SystemSummaryCards({ pvResults, bessResults, hpResults }: Props)
           { label: s.systemSize, value: `${hpResults.heatPumpSizeKW} kW` },
           { label: s.copEfficiency, value: `${hpResults.cop.toFixed(1)}×` },
           { label: s.hpElectricityUse, value: formatKWh(hpResults.annualHeatPumpElectricityKWh) + perYr },
+          ...(hpResults.solarCoveredKWh > 0
+            ? [{ label: s.solarCovered, value: formatKWh(hpResults.solarCoveredKWh) + perYr }]
+            : []),
           { label: s.currentHeatingCost, value: formatCurrency(hpResults.annualCurrentEnergyCost) + perYr },
           { label: s.hpEnergyCost, value: formatCurrency(hpResults.annualHeatPumpEnergyCost) + perYr },
           { label: s.annualSavings, value: formatCurrency(hpResults.annualSavings) + perYr },
