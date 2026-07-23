@@ -237,7 +237,7 @@ const en = {
     scenarioComparison: 'Scenario comparison',
     metric: 'Metric',
     contactTitle: 'Your energy partner',
-    generatedBy: 'Report generated with the Brinowatt calculator · brinowatt-app.vercel.app',
+    generatedBy: 'Report generated with the Brinowatt calculator · brinowatt.eu',
     fileName: 'Brinoko-Energy-Analysis',
   },
 }
@@ -462,7 +462,7 @@ const ro: CalcDictionary = {
     scenarioComparison: 'Comparație scenarii',
     metric: 'Indicator',
     contactTitle: 'Partenerul tău în energie',
-    generatedBy: 'Raport generat cu calculatorul Brinowatt · brinowatt-app.vercel.app',
+    generatedBy: 'Raport generat cu calculatorul Brinowatt · brinowatt.ro',
     fileName: 'Brinoko-Analiza-Energetica',
   },
 }
@@ -685,7 +685,7 @@ const it: CalcDictionary = {
     scenarioComparison: 'Confronto scenari',
     metric: 'Indicatore',
     contactTitle: 'Il tuo partner per l\'energia',
-    generatedBy: 'Report generato con il calcolatore Brinowatt · brinowatt-app.vercel.app',
+    generatedBy: 'Report generato con il calcolatore Brinowatt · brinowatt.eu',
     fileName: 'Brinoko-Analisi-Energetica',
   },
 }
@@ -908,7 +908,7 @@ const de: CalcDictionary = {
     scenarioComparison: 'Szenarienvergleich',
     metric: 'Kennzahl',
     contactTitle: 'Ihr Energiepartner',
-    generatedBy: 'Bericht erstellt mit dem Brinowatt-Rechner · brinowatt-app.vercel.app',
+    generatedBy: 'Bericht erstellt mit dem Brinowatt-Rechner · brinowatt.eu',
     fileName: 'Brinoko-Energieanalyse',
   },
 }

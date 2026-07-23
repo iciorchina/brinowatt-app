@@ -7,7 +7,7 @@ import { Footer } from '@/components/shared/Footer'
 import { StickyConsultCTA } from '@/components/shared/StickyConsultCTA'
 import { CookieBanner } from '@/components/shared/CookieBanner'
 
-const SITE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://brinowatt-app.vercel.app'
+const SITE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://brinowatt.eu'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

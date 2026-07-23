@@ -9,7 +9,7 @@ import { LANGS, type Lang } from '@/lib/i18n/dictionaries'
  * Other European languages served via Google's translation proxy
  * (translate.goog). Hostname rule: "-" -> "--", "." -> "-".
  */
-const PROXY_HOST = 'brinowatt--app-vercel-app.translate.goog'
+const PROXY_HOST = 'brinowatt-eu.translate.goog'
 
 const EU_LANGS: { code: string; label: string }[] = [
   { code: 'bg', label: 'Български' },
